@@ -1,0 +1,324 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B4B0AB0D-F679-4A15-8BEC-9160B2D11D3D}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FenixAutomat</RootNamespace>
+    <AssemblyName>FenixAutomat</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="FenixHelper">
+      <HintPath>..\FenixHelper\bin\Debug\FenixHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.WebServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLL\Microsoft.Exchange.WebServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Exchange.WebServices.Auth">
+      <HintPath>..\DLL\Microsoft.Exchange.WebServices.Auth.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UpcExtensions">
+      <HintPath>..\..\DOTNET40\LIB\DLL\UpcExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="UpcUtils">
+      <HintPath>..\..\DOTNET40\LIB\DLL\UpcUtils.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BC.cs" />
+    <Compile Include="CardStockItems.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="cdlItems.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="cdlKits.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="cdlKitsItems.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationMessagesCrmOrder.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationMessagesCrmOrderItems.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationMessagesDeleteMessage.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationMessagesKittingsApprovalKitsSent.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationMessagesKittingsApprovalKitsSerNumSent.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationMessagesKittingsApprovalSent.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationMessagesKittingsConfirmation.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationMessagesKittingsConfirmationItems.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationMessagesKittingsSent.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationMessagesKittingsSentItems.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationMessagesReceptionConfirmation.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationMessagesReceptionConfirmationItems.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationMessagesReceptionSent.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationMessagesReceptionSentItems.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationMessagesRefurbishedOrder.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationMessagesRefurbishedOrderItems.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationMessagesShipmentOrdersConfirmation.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationMessagesShipmentOrdersConfirmationItems.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationMessagesShipmentOrdersSent.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommunicationMessagesShipmentOrdersSentItems.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DeleteMessageEmail\D0DeleteMessageEmailReceive.cs" />
+    <Compile Include="DeleteMessageSent.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmailCreator\DeleteEmail\BaseOrderDeleteEmail.cs" />
+    <Compile Include="EmailCreator\DeleteEmail\KittingOrderDeleteEmail.cs" />
+    <Compile Include="EmailCreator\DeleteEmail\ReceptionOrderDeleteEmail.cs" />
+    <Compile Include="EmailCreator\DeleteEmail\RefurbishedOrderDeleteEmail.cs" />
+    <Compile Include="EmailCreator\DeleteEmail\ShipmentOrderDeleteEmail.cs" />
+    <Compile Include="EmailCreator\ShipmentOrderNotification.cs" />
+    <Compile Include="EmailReceived.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmailReceiver\D0DeleteEmailReceive.cs" />
+    <Compile Include="EmailSender\Email.cs" />
+    <Compile Include="EmailSent.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DeleteMessageEmail\D0DeleteMessageEmail.cs" />
+    <Compile Include="InternalDocument.cs" />
+    <Compile Include="InternalDocuments.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Loggers\DBLogger.cs" />
+    <Compile Include="FenixModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FenixModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FenixModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FenixModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FenixModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Loggers\FileLogger.cs" />
+    <Compile Include="Loggers\Logger.cs" />
+    <Compile Include="Message\BaseMessage.cs" />
+    <Compile Include="Message\CdlMessage.cs" />
+    <Compile Include="Message\ListCreator\ListsCreator.cs" />
+    <Compile Include="Message\RKSMessage.cs" />
+    <Compile Include="Message\Sender\MessageSender.cs" />
+    <Compile Include="Message\Sender\ReturnedValueFromND.cs" />
+    <Compile Include="Message\Sender\Simulator\SimulatorMessageSender.cs" />
+    <Compile Include="Message\Sender\WebService\WebServiceMessageSender.cs" />
+    <Compile Include="Message\SetSent\SetSentSpecial\CrmOrderSetSentAndModifyCardStockItem.cs" />
+    <Compile Include="Message\SetSent\CdlItemsSetSent.cs" />
+    <Compile Include="Message\SetSent\CdlKitsSetSent.cs" />
+    <Compile Include="Message\SetSent\DeleteMessageEmailSetSent.cs" />
+    <Compile Include="Message\SetSent\DeleteMessageSetSent.cs" />
+    <Compile Include="Message\SetSent\ISetSent.cs" />
+    <Compile Include="Message\SetSent\KittingsApprovalSetSent.cs" />
+    <Compile Include="Message\SetSent\KittingsOrderSetSent.cs" />
+    <Compile Include="Message\SetSent\ReceptionOrderSetSent.cs" />
+    <Compile Include="Message\SetSent\RefurbishedOrderSetSent.cs" />
+    <Compile Include="Message\SetSent\ShipmentOrderSetSent.cs" />
+    <Compile Include="ProcedureResult.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\NDLInterfaces\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="vwCMKSent.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vwCMRF0Sent.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vwCMRF0SentIt.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vwShipmentOrderIt.cs">
+      <DependentUpon>FenixModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <EntityDeploy Include="FenixModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>FenixModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="FenixModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>FenixModel.edmx</DependentUpon>
+      <LastGenOutput>FenixModel.Context.cs</LastGenOutput>
+    </None>
+    <None Include="FenixModel.edmx.diagram">
+      <DependentUpon>FenixModel.edmx</DependentUpon>
+    </None>
+    <None Include="FenixModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>FenixModel.edmx</DependentUpon>
+      <LastGenOutput>FenixModel.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Service References\NDLInterfaces\FenixAutomat.NDLInterfaces.UPWSI0Response.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\NDLInterfaces\NDL_Interfaces.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\NDLInterfaces\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\NDLInterfaces\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\NDLInterfaces\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\NDLInterfaces\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="EmailTemplates\K0forD0send.html" />
+    <Content Include="EmailTemplates\R0forD0send.html" />
+    <Content Include="EmailTemplates\RF0forD0send.html" />
+    <Content Include="EmailTemplates\S0forD0send.html" />
+    <Content Include="EmailTemplates\S0notification.html" />
+    <Content Include="EmailTemplates\signature.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

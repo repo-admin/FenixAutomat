@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:intf="http://localhost:8082/upcsw/NDL_Interfaces" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:impl="http://localhost:8082/upcsw/NDL_Interfaces" targetNamespace="http://localhost:8082/upcsw/NDL_Interfaces" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://localhost:8082/upcsw/NDL_Interfaces">
+      <xsd:element name="UPWSI0">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="login" type="xsd:string" />
+            <xsd:element name="password" type="xsd:string" />
+            <xsd:element name="partnerCode" type="xsd:string" />
+            <xsd:element name="messageType" type="xsd:string" />
+            <xsd:element name="characterEncoding" type="xsd:string" />
+            <xsd:element name="image" type="xsd:base64Binary" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="UPWSI0Response">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="UPWSI0Return" type="xsd:base64Binary" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="UPWSI0Response">
+    <wsdl:part name="parameters" element="impl:UPWSI0Response" />
+  </wsdl:message>
+  <wsdl:message name="UPWSI0Request">
+    <wsdl:part name="parameters" element="impl:UPWSI0" />
+  </wsdl:message>
+  <wsdl:portType name="PortTypeNDL_Interfaces">
+    <wsdl:operation name="UPWSI0">
+      <wsdl:input name="UPWSI0Request" message="impl:UPWSI0Request" />
+      <wsdl:output name="UPWSI0Response" message="impl:UPWSI0Response" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="NDL_InterfacesSoapBinding" type="impl:PortTypeNDL_Interfaces">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="UPWSI0">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="UPWSI0Request">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="UPWSI0Response">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="NDL_Interfaces">
+    <wsdl:port name="NDL_Interfaces" binding="impl:NDL_InterfacesSoapBinding">
+      <wsdlsoap:address location="http://83.206.128.120:8082/upcsw/services/NDL_Interfaces" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

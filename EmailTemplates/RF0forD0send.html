@@ -1,0 +1,102 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        body {
+            background-position: left top;
+            background-repeat: repeat-x;
+            color: black;
+            font-family: "Interstate Light",Tahoma,Verdana,Arial;
+            font-size: 10pt;
+        }
+        p {
+            font-size: 12pt;
+            font-family: Calibri, sans-serif;
+            color: #1F497D;
+        }
+        .grids {
+            font-size: 10pt;
+            font-weight: normal;
+            border-top: 1px solid black;
+            border-right: 1px solid black;
+            border-left: 1px solid black;
+            border-bottom: 1px solid black;
+            border-color: black;
+            color: black;
+            background-color: white;
+        }
+        .gridheader {
+            height: 26px;
+            color: #ffffff;
+            font-weight: bold;
+            background-color: #73C8EF;
+        }
+        tr.gridrows td, tr.gridrowalter td, tr.gridfooter td, table.grids td {
+            margin: 0px;
+            padding: 1px 5px 1px 5px;
+            border: solid 1px black;
+        }
+        table.grids {
+            border-collapse: collapse;
+            border: solid 1px black;
+        }
+        table.grids td, tr, th {
+            border: solid 1px black;
+            /*max-width: 100%;*/
+            /*white-space: nowrap;*/
+        }
+    </style>
+</head>
+<body>
+    <p>
+        Dobrý den,
+        <br />
+        <br />
+        zasíláme rekapitulaci objednávky ke zrušení.
+        <br />
+    </p>    
+    <div>
+    		<br />
+    		<h3>Refurbished Order</h3>
+    		<br />
+        <table class="grids" cellspacing="0" border="1" id="BaseMainContent_MainContent_gvItems" style="border-collapse:collapse;">
+            <tr class="gridheader">
+                <th scope="col">&nbsp;ID&nbsp;</th>
+                <th scope="col">&nbsp;MessageId&nbsp;</th>
+                <th scope="col">&nbsp;Datum odeslání&nbsp;</th>                
+                <th scope="col">&nbsp;Firma&nbsp;</th>
+                <th scope="col">&nbsp;Město&nbsp;</th>
+            </tr>
+            #TABLE_HEADER_CONTENT#            
+        </table>
+        <br />
+        <br />
+        <h3>Detail</h3>
+        <br />
+        <table class="grids" cellspacing="0" border="1" id="BaseMainContent_MainContent_gvItems" style="border-collapse:collapse;">
+            <tr class="gridheader">
+                <th scope="col">&nbsp;ID&nbsp;</th>
+                <th scope="col">&nbsp;Item/Kit&nbsp;</th>                                
+                <th scope="col">&nbsp;ID položky&nbsp;</th>                
+                <th scope="col">&nbsp;Popis&nbsp;</th>
+                <th scope="col">&nbsp;Obj.množ.&nbsp;</th>
+                <th scope="col">&nbsp;MeJe&nbsp;</th>
+                <th scope="col">&nbsp;Kvalita&nbsp;</th>
+            </tr>
+            #TABLE_DETAIL_CONTENT#            
+        </table>
+    </div>    
+    <p>        
+        <br />        
+        Odpověď, laskavě, zašlete na aresu fenix@upc.cz. 
+        <br />
+        <br />
+        Děkujeme
+        <br />
+        <br />
+        Logistika UPC
+    </p>
+    <img src="cid:Signature">
+</body>
+</html>
