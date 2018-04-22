@@ -187,7 +187,7 @@
     <Compile Include="EmailTemplates\RF0forD0send.cs" />
     <Compile Include="EmailTemplates\S0forD0send.cs" />
     <Compile Include="EmailTemplates\S0notification.cs" />
-    <Compile Include="InternalDocument.cs" />
+    <Compile Include="InternalDocumentsHandler.cs" />
     <Compile Include="InternalDocuments.cs">
       <DependentUpon>FenixModel.tt</DependentUpon>
     </Compile>

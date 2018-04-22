@@ -7,21 +7,28 @@ using FenixHelper.Common;
 
 namespace FenixAutomat
 {
+    /// <summary>
+    /// Hlavní aplikační část, tz. application entry stub
+    /// </summary>
 	class Program
 	{
+        /// <summary>
+        /// Entry point aplikace
+        /// </summary>
+        /// <param name="args"></param>
 		static void Main(string[] args)
 		{
 			if (ApplicationCanRun())
 			{
 				Logger.WriteIntoLoggers(AppLog.LOG_CATEGORY_INFO, "Automat spuštěn...", AppLog.GetMethodName(), BC.ServiceUserId);
 
-				sendCdlMessagesToND(BC.ServiceUserId);
-				sendRKSMessagesToND(BC.ServiceUserId);
+				SendCdlMessagesToNd(BC.ServiceUserId);
+				SendRksMessagesToNd(BC.ServiceUserId);
 
 				if (BC.DeleteMessageViaXML == false)
 				{
-					sendDEmailMessagesToND(BC.ServiceUserId);
-					receiveDEmailMessagesFromND(BC.ServiceUserId);
+					SendDEmailMessagesToNd(BC.ServiceUserId);
+					ReceiveDEmailMessagesFromNd(BC.ServiceUserId);
 				}
 
 				Logger.WriteIntoLoggers(AppLog.LOG_CATEGORY_INFO, "Automat ukončen...", AppLog.GetMethodName(), BC.ServiceUserId);				
@@ -47,7 +54,7 @@ namespace FenixAutomat
 		/// Vytvoření a odeslání XML zpráv pro items a kity
 		/// </summary>
 		/// <returns></returns>
-		private static ResultAppService sendCdlMessagesToND(int zicyzUserId)
+		private static ResultAppService SendCdlMessagesToNd(int zicyzUserId)
 		{
 			ResultAppService result = new ResultAppService(BC.NOT_OK, BC.UNKNOWN);
 
@@ -75,7 +82,7 @@ namespace FenixAutomat
 		/// CRM
 		/// </summary>
 		/// <returns></returns>
-		private static ResultAppService sendRKSMessagesToND(int zicyzUserId)
+		private static ResultAppService SendRksMessagesToNd(int zicyzUserId)
 		{
 			ResultAppService result = new ResultAppService(BC.NOT_OK, BC.UNKNOWN);
 
@@ -108,7 +115,7 @@ namespace FenixAutomat
 		/// Vytvoření a odeslání emailů s požadavky na smazání messages na straně ND (D0 - DeleteMessage[Order])
 		/// </summary>
 		/// <returns></returns>
-		private static void sendDEmailMessagesToND(int zicyzUserId)
+		private static void SendDEmailMessagesToNd(int zicyzUserId)
 		{
 			ResultAppService result = new ResultAppService(BC.NOT_OK, BC.UNKNOWN);
 
@@ -133,7 +140,7 @@ namespace FenixAutomat
 		/// Zpracování přijatých emailů s Fenix požadavky na smazání messages na straně ND (odesílatelem je ND/XPO)
 		/// </summary>
 		/// <param name="zicyzUserId"></param>
-		private static void receiveDEmailMessagesFromND(int zicyzUserId)
+		private static void ReceiveDEmailMessagesFromNd(int zicyzUserId)
 		{
 			ResultAppService result = new ResultAppService(BC.NOT_OK, BC.UNKNOWN);
 

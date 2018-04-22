@@ -1,54 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using FenixAutomat.Loggers;
 using FenixHelper;
 
 namespace FenixAutomat
 {
-	public class InternalDocument
+    /// <summary>
+    /// Třída sloužící pro práci s <seealso cref="InternalDocuments"/>
+    /// </summary>
+	public class InternalDocumentsHandler
 	{
-		/// <summary>
-		/// ZicyzId uživatele, který provedl změnu na skladové kartě
-		/// </summary>
-		private int zicyzId;
-				
-		/// <summary>
-		/// Místo vzniku interního dokladu
-		/// </summary>
-		private InternalDocumentsSource source;
+	    /// <summary>
+	    /// ZicyzId uživatele, který provedl změnu na skladové kartě
+	    /// </summary>
+	    public int ZicyzId { get; }
 
-		#region Not used
-		//private CardStockItems cardStockStatusBefore;
-		
-		///// <summary>
-		///// Stav na skladové kartě před změnou/změnami
-		///// </summary>
-		//public CardStockItems CardStockStatusBefore 
-		//{
-		//	get 
-		//	{ 
-		//		return this.cardStockStatusBefore; 
-		//	} 
-		//	set 
-		//	{
-		//		this.cardStockStatusBefore = value;
-		//	} 
-		//}		
+	    /// <summary>
+	    /// Místo vzniku interního dokladu
+	    /// </summary>
+	    public InternalDocumentsSource Source { get; }
 
-		///// <summary>
-		///// Stav na skladové kartě po změně/změnách
-		///// </summary>
-		//public CardStockItems CardStockStatusAfter { get; set; } 
-		#endregion
-
-		public InternalDocument(int zicyzId, InternalDocumentsSource source)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="zicyzId">Id uživatele, který provedl změnu na skladové kartě</param>
+        /// <param name="source">Instance třídy <seealso cref="InternalDocumentsSource"/></param>
+		public InternalDocumentsHandler(int zicyzId, InternalDocumentsSource source)
 		{
-			this.zicyzId = zicyzId;
-			this.source = source;
+			this.ZicyzId = zicyzId;
+			this.Source = source;
 		}
 
+        /// <summary>
+        /// Vrací kolekci aktivních objektů <seealso cref="CardStockItems"/> pro specifikované kid ID,
+        /// viz <param name="id"></param>
+        /// </summary>
+        /// <param name="db">Instance třídy <seealso cref="DbContext"/> databáze Fénix</param>
+        /// <param name="id"></param>
+        /// <returns></returns>
 		public CardStockItems GetCardStock(FenixEntities db, int id)
 		{
 			CardStockItems cardStockItem = new CardStockItems();
@@ -67,9 +57,15 @@ namespace FenixAutomat
 			return cardStockItem;
 		}
 
-		public void CreateInternalDocument(FenixEntities db, CardStockItems cardStockStatusBefore, CardStockItems cardStockStatusAfter)
+        /// <summary>
+        /// Vytváří novou instanci třídy <seealso cref="InternalDocuments"/>
+        /// </summary>
+        /// <param name="db">Instance třídy <seealso cref="DbContext"/> databáze Fénix</param>
+        /// <param name="cardStockStatusBefore"></param>
+        /// <param name="cardStockStatusAfter"></param>
+		public void CreateInternalDocuments(FenixEntities db, CardStockItems cardStockStatusBefore, CardStockItems cardStockStatusAfter)
 		{
-			if ((cardStockStatusBefore == null) || (cardStockStatusAfter == null) || (this.isSame(cardStockStatusBefore, cardStockStatusAfter))) return;
+			if ((cardStockStatusBefore == null) || (cardStockStatusAfter == null) || (this.IsSame(cardStockStatusBefore, cardStockStatusAfter))) return;
 			
 			try
 			{
@@ -95,10 +91,10 @@ namespace FenixAutomat
 				internalDocument.ItemOrKitExpeditedAfter = cardStockStatusAfter.ItemOrKitExpedited;
 
 				internalDocument.StockId = 2;	//ND/XPO
-				internalDocument.InternalDocumentsSourceId = (int)this.source;
+				internalDocument.InternalDocumentsSourceId = (int)this.Source;
 				internalDocument.IsActive = true;
 				internalDocument.ModifyDate = DateTime.Now;
-				internalDocument.ModifyUserId = this.zicyzId;
+				internalDocument.ModifyUserId = this.ZicyzId;
 
 				db.InternalDocuments.Add(internalDocument);				
 			}
@@ -112,7 +108,7 @@ namespace FenixAutomat
 		/// Rozhodnutí, zda sledovaná množství na skladové kartě před změnou a po změně jsou stejná
 		/// </summary>
 		/// <returns></returns>
-		private bool isSame(CardStockItems cardStockStatusBefore, CardStockItems cardStockStatusAfter)
+		private bool IsSame(CardStockItems cardStockStatusBefore, CardStockItems cardStockStatusAfter)
 		{
 			return (
 						(cardStockStatusBefore.ItemOrKitFree == cardStockStatusAfter.ItemOrKitFree) &&

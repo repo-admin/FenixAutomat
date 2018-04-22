@@ -242,7 +242,7 @@ namespace FenixAutomat.DeleteMessageEmail
 				
 				foreach (var cardStockItem in cardStockItems)
 				{					
-					InternalDocument internalDocument = new InternalDocument(this.zicyzUserId, InternalDocumentsSource.FenixAutomatDeleteMessageEmail);
+					InternalDocumentsHandler internalDocumentsHandler = new InternalDocumentsHandler(this.zicyzUserId, InternalDocumentsSource.FenixAutomatDeleteMessageEmail);
 
 					CardStockItems cardStockStatusBefore = new CardStockItems();
 					cardStockStatusBefore.ID = cardStockItem.ID;
@@ -291,8 +291,8 @@ namespace FenixAutomat.DeleteMessageEmail
 					}
 					db.SaveChanges();
 
-					CardStockItems cardStockStatusAfter = internalDocument.GetCardStock(db, cardStockItem.ItemOrKitID);
-					internalDocument.CreateInternalDocument(db, cardStockStatusBefore, cardStockStatusAfter);
+					CardStockItems cardStockStatusAfter = internalDocumentsHandler.GetCardStock(db, cardStockItem.ItemOrKitID);
+					internalDocumentsHandler.CreateInternalDocuments(db, cardStockStatusBefore, cardStockStatusAfter);
 					db.SaveChanges();
 				}
 			}
@@ -327,7 +327,7 @@ namespace FenixAutomat.DeleteMessageEmail
 
 				if (cardStock != null)
 				{					
-					InternalDocument internalDocument = new InternalDocument(this.zicyzUserId, InternalDocumentsSource.FenixAutomatDeleteMessageEmail);
+					InternalDocumentsHandler internalDocumentsHandler = new InternalDocumentsHandler(this.zicyzUserId, InternalDocumentsSource.FenixAutomatDeleteMessageEmail);
 															
 					//CardStockItems cardStockStatusBefore = internalDocument.GetCardStock(db, cardStock.ItemOrKitID);
 					
@@ -361,8 +361,8 @@ namespace FenixAutomat.DeleteMessageEmail
 					cardStock.ModifyUserId = this.zicyzUserId;
 					db.SaveChanges();
 
-					CardStockItems cardStockStatusAfter = internalDocument.GetCardStock(db, cardStock.ItemOrKitID);
-					internalDocument.CreateInternalDocument(db, cardStockStatusBefore, cardStockStatusAfter);
+					CardStockItems cardStockStatusAfter = internalDocumentsHandler.GetCardStock(db, cardStock.ItemOrKitID);
+					internalDocumentsHandler.CreateInternalDocuments(db, cardStockStatusBefore, cardStockStatusAfter);
 					db.SaveChanges();
 				}
 			}			

@@ -16,7 +16,7 @@ namespace FenixAutomat.EmailSender
 		/// <summary>
 		/// Hash těla mailu
 		/// </summary>
-		private string emailBodyHash;
+		public string EmailBodyHash;
 
 		/// <summary>
 		/// Typ = z jakého programu je mail posílán
@@ -89,7 +89,7 @@ namespace FenixAutomat.EmailSender
 			this.IsBodyHtml = false;
 			this.Source = String.Empty;
 			this.SendOnlyOnce = false;
-			this.emailBodyHash = String.Empty;
+			this.EmailBodyHash = String.Empty;
 			this.IsInternal = true;
 		}
 
@@ -250,11 +250,11 @@ namespace FenixAutomat.EmailSender
 
 			try
 			{
-				this.emailBodyHash = BC.CreateSHA256Hash(this.Body);
+				this.EmailBodyHash = BC.CreateSHA256Hash(this.Body);
 
 				if (this.SendOnlyOnce)
 				{
-					if (EmailCountByBodyHash(this.emailBodyHash) == 0)
+					if (EmailCountByBodyHash(this.EmailBodyHash) == 0)
 					{
 						result = Email.SendMail(this.Subject, this.Body, this.IsBodyHtml, this.MailTo, this.MailCC, this.MailBcc, null);
 						this.writeIntoEmailSent();
@@ -323,7 +323,7 @@ namespace FenixAutomat.EmailSender
 					ObjectParameter retVal = new ObjectParameter("ReturnValue", typeof(int));
 					ObjectParameter retMsg = new ObjectParameter("ReturnMessage", typeof(string));
 					
-					db.prEmailSentWrite(this.Type, BC.MailFrom, this.MailTo, this.Subject, this.emailBodyHash, this.Body, this.EmbededPicture, BC.ServiceUserId, this.Source, this.IsInternal, retVal, retMsg);
+					db.prEmailSentWrite(this.Type, BC.MailFrom, this.MailTo, this.Subject, this.EmailBodyHash, this.Body, this.EmbededPicture, BC.ServiceUserId, this.Source, this.IsInternal, retVal, retMsg);
 				}
 			}
 			catch

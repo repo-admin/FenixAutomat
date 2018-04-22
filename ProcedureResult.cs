@@ -2,24 +2,34 @@
 
 namespace FenixAutomat
 {
-	/// <summary>Výsledek akce procedury.</summary>
-	[DataContract(Namespace = BC.APP_NAMESPACE)]
+    /// <summary>
+    /// Výsledek akce procedury
+    /// </summary>
+    [DataContract(Namespace = BC.APP_NAMESPACE)]
 	public class ProcedureResult
 	{
-		/// <summary></summary>
-		[DataMember]
+        /// <summary>
+        /// Chyba
+        /// </summary>
+        [DataMember]
 		public string Error { set; get; }
-		[DataMember]
 
-		/// <summary></summary>
+        /// <summary>
+        /// Identita
+        /// </summary>
+	    [DataMember]
 		public string Identity { set; get; }
-		[DataMember]
 
-		/// <summary></summary>
+        /// <summary>
+        /// Duplicita
+        /// </summary>
+		[DataMember]
 		public string Duplicity { set; get; }
-		[DataMember]
 
-		/// <summary></summary>
+        /// <summary>
+        /// Popis stavu
+        /// </summary>
+	    [DataMember]
 		public string StatusDesc { set; get; }
 	}
 
@@ -27,11 +37,11 @@ namespace FenixAutomat
 	[DataContract(Namespace = BC.APP_NAMESPACE)]
 	public class ProcResult
 	{
-		/// <summary></summary>
+		/// <summary>Návratová hodnota</summary>
 		[DataMember(IsRequired = true)]
 		public int ReturnValue { set; get; }
 
-		/// <summary></summary>
+		/// <summary>Návratová zpráva</summary>
 		[DataMember]
 		public string ReturnMessage { set; get; }
 	}
