@@ -182,11 +182,16 @@
       <DependentUpon>FenixModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DeleteMessageEmail\D0DeleteMessageEmail.cs" />
+    <Compile Include="EmailTemplates\K0forD0send.cs" />
+    <Compile Include="EmailTemplates\R0forD0send.cs" />
+    <Compile Include="EmailTemplates\RF0forD0send.cs" />
+    <Compile Include="EmailTemplates\S0forD0send.cs" />
+    <Compile Include="EmailTemplates\S0notification.cs" />
     <Compile Include="InternalDocument.cs" />
     <Compile Include="InternalDocuments.cs">
       <DependentUpon>FenixModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Loggers\DBLogger.cs" />
+    <Compile Include="Loggers\DbLogger.cs" />
     <Compile Include="FenixModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

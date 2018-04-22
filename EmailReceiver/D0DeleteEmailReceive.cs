@@ -7,6 +7,9 @@ using Microsoft.Exchange.WebServices.Data;
 
 namespace FenixAutomat.EmailReceiver
 {
+    /// <summary>
+    /// 
+    /// </summary>
 	public class D0DeleteEmailReceive
 	{
 		private readonly string exchangeURL;
@@ -39,15 +42,25 @@ namespace FenixAutomat.EmailReceiver
 		{
 		}
 
-		public D0DeleteEmailReceive(string exchangeURL, string domainName, string userName, string password)
+        /// <summary>
+        /// Vytváří instanci <seealso cref="D0DeleteEmailReceive"/>
+        /// </summary>
+        /// <param name="exchangeUrl"></param>
+        /// <param name="domainName"></param>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+		public D0DeleteEmailReceive(string exchangeUrl, string domainName, string userName, string password)
 		{
-			this.exchangeURL = exchangeURL;
+			this.exchangeURL = exchangeUrl;
 			this.domainName = domainName;
 			this.userName = userName;
 			this.password = password;			
 		}
-				
-		public void CreateExchangeService()
+
+        /// <summary>
+        /// Vytváří instanci třídy <seealso cref="Microsoft.Exchange.WebServices.Data.ExchangeService"/>
+        /// </summary>
+        public void CreateExchangeService()
 		{
 			this.ExchangeService = new ExchangeService(ExchangeVersion.Exchange2010_SP2)		//Exchange2010_SP2  ExchangeVersion.Exchange2007_SP1
 			{
@@ -56,15 +69,15 @@ namespace FenixAutomat.EmailReceiver
 			};
 		}
 
-		/// <summary>
-		/// Vrací počet nepřečtených emailů v adresáři
-		/// </summary>
-		/// <param name="folderType">typ adresáře</param>
-		/// <returns></returns>
-		public int GetUnreadMailsCountInFolder(WellKnownFolderName folder)
+        /// <summary>
+        /// Vrací počet nepřečtených emailů v adresáři
+        /// </summary>
+        /// <param name="folderType">typ adresáře</param>
+        /// <returns>Vrací počet nepřečtených emailů v adresáři</returns>
+        public int GetUnreadMailsCountInFolder(WellKnownFolderName folderType)
 		{
 			int unreadMailsCount;
-			switch (folder)
+			switch (folderType)
 			{
 				case WellKnownFolderName.Inbox:
 					unreadMailsCount = Folder.Bind(this.exchangeService, WellKnownFolderName.Inbox).UnreadCount;
@@ -82,16 +95,17 @@ namespace FenixAutomat.EmailReceiver
 			return unreadMailsCount;
 		}
 
-		/// <summary>
-		/// Nepřečtené itemy
-		/// </summary>
-		/// <param name="unreadCount"></param>
-		/// <returns></returns>
-		public FindItemsResults<Item> GetUndreadItemsInFolder(WellKnownFolderName folder, int unreadCount)
+        /// <summary>
+        /// Nepřečtené itemy
+        /// </summary>
+        /// <param name="folderType">typ adresáře</param>
+        /// <param name="pageSize">Počet položek na stránce</param>
+        /// <returns></returns>
+        public FindItemsResults<Item> GetUndreadItemsInFolder(WellKnownFolderName folderType, int pageSize)
 		{							
 			SearchFilter sf = new SearchFilter.SearchFilterCollection(LogicalOperator.And, new SearchFilter.IsEqualTo(EmailMessageSchema.IsRead, false));
-			ItemView view = new ItemView(unreadCount);
-			return this.exchangeService.FindItems(folder, sf, view);
+			ItemView view = new ItemView(pageSize);
+			return this.exchangeService.FindItems(folderType, sf, view);
 		}
 
 	}

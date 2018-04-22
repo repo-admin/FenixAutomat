@@ -3,6 +3,7 @@ using FenixAutomat.Loggers;
 using FenixAutomat.Message.Sender;
 using FenixHelper.Common;
 using FenixAutomat.EmailSender;
+// ReSharper disable All
 
 namespace FenixAutomat.Message
 {
@@ -31,34 +32,35 @@ namespace FenixAutomat.Message
 			this.ZicyzUserID = zicyzUserId;
 		}
 
-		#region Protected Methods
+        #region Protected Methods
 
-		/// <summary>
-		/// Zpracování chyby, která nastala ve třídě ListsCreator 
-		/// </summary>
-		/// <param name="returnError"></param>
-		/// <param name="methodName"></param>
-		protected void ProcessListsCreatorError(string returnError, string methodName)
+        /// <summary>
+        /// Zpracování chyby, která nastala ve třídě <seealso cref="ListsCreator"/> 
+        /// </summary>
+        /// <param name="returnError"></param>
+        /// <param name="methodName"></param>
+        protected void ProcessListsCreatorError(string returnError, string methodName)
 		{
 			this.Result.AddResultMessage(BC.NOT_OK, returnError);
 			Logger.ProcessError(returnError, methodName, BC.ServiceUserId);
 		}
 
-		/// <summary>
-		/// Akce po odeslání XML zprávy do ND
-		/// - pošle email s informací o odeslání zprávy do ND
-		/// - pokud ND vrátilo chybu, je odeslán další mail s detailem této chyby a chyba je zapsána do databáze		
-		/// </summary>
-		/// <param name="message"></param>
-		/// <param name="ndResult"></param>
-		protected void ActionsAfterSendingXmlMessageToND(string message, ReturnedValueFromND ndResult, string methodName)
+	    /// <summary>
+	    /// Akce po odeslání XML zprávy do ND
+	    /// - pošle email s informací o odeslání zprávy do ND
+	    /// - pokud ND vrátilo chybu, je odeslán další mail s detailem této chyby a chyba je zapsána do databáze		
+	    /// </summary>
+	    /// <param name="message"></param>
+	    /// <param name="ndResult"></param>
+	    /// <param name="methodName"></param>
+	    protected void ActionsAfterSendingXmlMessageToND(string message, ReturnedValueFromND ndResult, string methodName)
 		{
 			this.sendInfoEmail(message, ndResult, methodName);
 
 			if (!ndResult.ReturnedValueIsOK)
 			{
 				this.sendErrorEmail(message, ndResult, methodName);
-				DBLogger.WriteToLog("ERROR", ndResult.Message, methodName, BC.ServiceUserId);
+				DbLogger.WriteToLog("ERROR", ndResult.Message, methodName, BC.ServiceUserId);
 			}
 		}
 

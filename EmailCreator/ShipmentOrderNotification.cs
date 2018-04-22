@@ -69,14 +69,15 @@ namespace FenixAutomat.EmailCreator
 		{
 		}
 
-		/// <summary>
-		/// ctor
-		/// </summary>
-		/// <param name="s0Shipment"></param>
-		public ShipmentOrderNotification(S0Shipment s0Shipment, ReturnedValueFromND ndResult)
+	    /// <summary>
+	    /// ctor
+	    /// </summary>
+	    /// <param name="s0Shipment"></param>
+	    /// <param name="ndResult"></param>
+	    public ShipmentOrderNotification(S0Shipment s0Shipment, ReturnedValueFromND ndResult)
 		{
 			this.actualS0Shipment = s0Shipment;			
-			this.canSendEmail = this.emailCanBeSend(s0Shipment, ndResult);
+			this.canSendEmail = this.EmailCanBeSend(s0Shipment, ndResult);
 			this.emailBody = String.Empty;
 			this.subject = "Expedice CPE";
 			this.embededPictureName = "signature.jpg";
@@ -92,14 +93,14 @@ namespace FenixAutomat.EmailCreator
 			{
 				if (this.canSendEmail)
 				{
-					this.createAndSendEmail();
-					this.saveEmailToDatabase();
+					this.CreateAndSendEmailCore();
+					this.SaveEmailToDatabase();
 				}
 				else
 				{
 					if (actualS0Shipment.Header.ContactEmail.IsNullOrEmpty())
 					{
-						this.sendErrorEmail(String.Format("S0 ID = [{0}]\nnemá vyplněný email příjemce.", this.actualS0Shipment.Header.ID), AppLog.GetMethodName());
+						this.SendErrorEmail(String.Format("S0 ID = [{0}]\nnemá vyplněný email příjemce.", this.actualS0Shipment.Header.ID), AppLog.GetMethodName());
 					}
 				}
 			}
@@ -117,7 +118,7 @@ namespace FenixAutomat.EmailCreator
 		/// <param name="s0Shipment"></param>
 		/// <param name="ndResult"></param>
 		/// <returns></returns>
-		private bool emailCanBeSend(S0Shipment s0Shipment, ReturnedValueFromND ndResult)
+		private bool EmailCanBeSend(S0Shipment s0Shipment, ReturnedValueFromND ndResult)
 		{
 			bool canBeSend = false;
 			
@@ -150,7 +151,7 @@ namespace FenixAutomat.EmailCreator
 		///		- do těla mailu se vkládá obrázek uložený na disku
 		///		- email se odesílá právě 1x
 		/// </summary>
-		private void createAndSendEmail()
+		private void CreateAndSendEmailCore()
 		{
 			string assemblyPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 			string template = Path.Combine(assemblyPath, this.templateName);
@@ -163,7 +164,7 @@ namespace FenixAutomat.EmailCreator
 					this.emailBody = streamReader.ReadToEnd();
 				}
 
-				this.emailBody = this.emailBody.Replace(TABLE_CONTENT, createTableContent());
+				this.emailBody = this.emailBody.Replace(TABLE_CONTENT, CreateTableContent());
 				this.emailBodyHash = BC.CreateSHA256Hash(this.emailBody + this.actualS0Shipment.Header.ContactEmail);
 
 				if (Email.EmailCountByBodyHash(this.emailBodyHash) == 0)
@@ -188,7 +189,7 @@ namespace FenixAutomat.EmailCreator
 			}
 			catch (Exception ex)
 			{
-				this.sendErrorEmail(ex, AppLog.GetMethodName());
+				this.SendErrorEmail(ex, AppLog.GetMethodName());
 				throw;
 			}
 		}
@@ -196,7 +197,7 @@ namespace FenixAutomat.EmailCreator
 		/// <summary>
 		/// Uložení emailu do databáze
 		/// </summary>
-		private void saveEmailToDatabase()
+		private void SaveEmailToDatabase()
 		{
 			try
 			{
@@ -210,12 +211,12 @@ namespace FenixAutomat.EmailCreator
 					bool emailIsInternal = false;
 					db.prEmailSentWrite(BC.APP_NAMESPACE, BC.MailFrom, this.actualS0Shipment.Header.ContactEmail,
 						                this.subject, this.emailBodyHash, this.emailBody, this.embededPictureName, 
-										BC.ServiceUserId, className(), emailIsInternal, retVal, retMsg);
+										BC.ServiceUserId, GetClassName(), emailIsInternal, retVal, retMsg);
 				}
 			}
 			catch(Exception ex)
 			{
-				this.sendErrorEmail(ex, AppLog.GetMethodName());
+				this.SendErrorEmail(ex, AppLog.GetMethodName());
 				throw;
 			}
 		}
@@ -224,7 +225,7 @@ namespace FenixAutomat.EmailCreator
 		/// Vytvoření řádků tabulky
 		/// </summary>
 		/// <returns></returns>
-		private string createTableContent()
+		private string CreateTableContent()
 		{
 			string content = String.Empty;
 			string lokace = this.actualS0Shipment.Header.CustomerName ?? String.Empty;
@@ -247,17 +248,27 @@ namespace FenixAutomat.EmailCreator
 			return content;
 		}
 
-		private void sendErrorEmail(Exception exception, string methodName)
+        /// <summary>
+        /// Vytváří text chybové hlášky z <seealso cref="Exception"/> a odesílá email
+        /// </summary>
+        /// <param name="exception"></param>
+        /// <param name="methodName"></param>
+		private void SendErrorEmail(Exception exception, string methodName)
 		{
-			this.sendErrorEmail(BC.CreateErrorMessage(methodName, exception), methodName);
+			this.SendErrorEmail(BC.CreateErrorMessage(methodName, exception), methodName);
 		}
 
-		private void sendErrorEmail(string errMessage, string methodName)
+        /// <summary>
+        /// Odesílá e-mail s chybovým hlášením
+        /// </summary>
+        /// <param name="errMessage">Chybová hláška</param>
+        /// <param name="methodName">Metoda, ve které vznikla vyjímka</param>
+		private void SendErrorEmail(string errMessage, string methodName)
 		{
 			Email errorEmail = new Email()
 			{
 				Type = BC.APP_NAMESPACE,
-				Subject = String.Format("{0} - {1}", "Fenix Automat ERROR", className()),
+				Subject = String.Format("{0} - {1}", "Fenix Automat ERROR", GetClassName()),
 				Body = errMessage,
 				MailTo = BC.MailErrorTo,
 				SendOnlyOnce = true,
@@ -271,7 +282,7 @@ namespace FenixAutomat.EmailCreator
 		/// Vrací jmého třídy
 		/// </summary>
 		/// <returns></returns>
-		private static string className()
+		private static string GetClassName()
 		{
 			string[] par = AppLog.GetMethodName().Split('.');
 			string name = par.Length >= 2 ? par[1] : "UNKNOWN CLASS NAME";

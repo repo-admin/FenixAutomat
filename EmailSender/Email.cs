@@ -6,6 +6,9 @@ using UPC.Extensions.Convert;
 
 namespace FenixAutomat.EmailSender
 {
+    /// <summary>
+    /// Objektová reprezentace emailové zprávy
+    /// </summary>
 	public class Email
 	{
 		#region Properties

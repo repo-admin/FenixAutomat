@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using FenixAutomat.EmailReceiver;
 using FenixAutomat.EmailSender;
@@ -15,34 +16,24 @@ namespace FenixAutomat.DeleteMessageEmail
 	/// - poštovní schránka: fenix@upc.cz
 	/// - požadovaný tvar  : UPC_CZ Fenix DeleteMessage MessageDescription={0} ID={1} MessageID={2}
 	/// </summary>
-	class D0DeleteMessageEmailReceive
+	internal class D0DeleteMessageEmailReceive
 	{
 		/// <summary>
 		/// zicyz ID aktuálního uživatele
 		/// </summary>
 		private int zicyzUserId;
 
-		private int id;
+	    private const int ReceptionOrder = 0;
 
-		private int messageID;
+		private const int KittingOrder = 1;
 
-		private string messageType;
+		private const int ShipmentOrder = 2;
 
-		private const int RECEPTION_ORDER = 0;
+		private const int RefurbishedOrder = 3;
 
-		private const int KITTING_ORDER = 1;
+	    public string[] MessageTypes = new string[] { "ReceptionOrder", "KittingOrder", "ShipmentOrder", "RefurbishedOrder" };
 
-		private const int SHIPMENT_ORDER = 2;
-
-		private const int REFURBISHED_ORDER = 3;
-
-		private string[] messageTypes = new string[] { "ReceptionOrder", "KittingOrder", "ShipmentOrder", "RefurbishedOrder" };
-				
-		private string emailSubject;
-
-		private int processedEmailCount;
-
-		private const int MESSAGE_STATUS_RECEIVED = 12;
+	    private const int MessageStatusReceived = 12;
 
 		/// <summary>
 		/// ctor
@@ -53,7 +44,17 @@ namespace FenixAutomat.DeleteMessageEmail
 			this.zicyzUserId = zicyzUserId;		
 		}
 
-		/// <summary>
+	    public int Id { get; set; }
+
+	    public int MessageId { get; set; }
+
+	    public string MessageType { get; set; }
+
+	    public string EmailSubject { get; set; }
+
+	    internal int ProcessedEmailCount { get; set; }
+
+	    /// <summary>
 		/// Přečtení a zpracování doručeného emailu z ND(XPO)
 		/// </summary>
 		/// <returns></returns>
@@ -75,17 +76,17 @@ namespace FenixAutomat.DeleteMessageEmail
 					FindItemsResults<Item> items = d0DeleteEmailReceive.GetUndreadItemsInFolder(WellKnownFolderName.Inbox, unreadEmailCount);
 					foreach (EmailMessage message in items.Items)
 					{
-						if ((this.parseEmailSubject(message.Subject)) && (message.IsRead == false))
+						if ((this.ParseEmailSubject(message.Subject)) && (message.IsRead == false))
 						{
-							if (this.emailBySubjectAlreadyProcessed(message.Subject, message.From.Name) == false)
+							if (this.EmailBySubjectAlreadyProcessed(message.Subject, message.From.Name) == false)
 							{
-								if (this.process())
+								if (this.Process())
 								{
 									message.IsRead = true;
 									message.Update(ConflictResolutionMode.AlwaysOverwrite);
 									message.Delete(DeleteMode.MoveToDeletedItems);
-									this.sendInfoEmail(AppLog.GetMethodName());
-									this.processedEmailCount++;
+									this.SendInfoEmail(AppLog.GetMethodName());
+									this.ProcessedEmailCount++;
 								}
 							}
 							else
@@ -97,7 +98,7 @@ namespace FenixAutomat.DeleteMessageEmail
 						}
 					}
 				}
-				result.AddResultMessage(String.Format("Počet DeleteMessage Emailů skutečně zpracovaných {0}", this.processedEmailCount));
+				result.AddResultMessage(String.Format("Počet DeleteMessage Emailů skutečně zpracovaných {0}", this.ProcessedEmailCount));
 			}
 			catch (Exception e)
 			{
@@ -107,17 +108,18 @@ namespace FenixAutomat.DeleteMessageEmail
 			return result;
 		}
 
-		/// <summary>
-		/// Podle parsovaneho subjektu emailu rozhodne, zda je email již zpracovaný
-		/// (pokud není, je email uložen do databáze)
-		/// </summary>
-		/// <param name="emailSubject"></param>
-		/// <returns></returns>
-		private bool emailBySubjectAlreadyProcessed(string emailSubject, string emailFrom)
+	    /// <summary>
+	    /// Podle parsovaneho subjektu emailu rozhodne, zda je email již zpracovaný
+	    /// (pokud není, je email uložen do databáze)
+	    /// </summary>
+	    /// <param name="emailSubject"></param>
+	    /// <param name="emailFrom"></param>
+	    /// <returns></returns>
+	    private bool EmailBySubjectAlreadyProcessed(string emailSubject, string emailFrom)
 		{
 			bool result = false;
 
-			string parsedSubject = string.Format("UPC_CZ Fenix DeleteMessage MessageDescription={0} ID={1} MessageID={2}", this.messageType, this.id, this.messageID);
+			string parsedSubject = string.Format("UPC_CZ Fenix DeleteMessage MessageDescription={0} ID={1} MessageID={2}", this.MessageType, this.Id, this.MessageId);
 			string parsedSubjectHash = BC.CreateSHA256Hash(parsedSubject);
 
 			using (var db = new FenixEntities())
@@ -176,7 +178,7 @@ namespace FenixAutomat.DeleteMessageEmail
 		/// pro kitting a shipment se nastavuje vrácené množství na skladové kartě a vytváří se interní doklad
 		/// </summary>
 		/// <returns></returns>
-		private bool process()
+		private bool Process()
 		{
 			bool result = false;
 
@@ -189,18 +191,18 @@ namespace FenixAutomat.DeleteMessageEmail
 						db.Configuration.LazyLoadingEnabled = false;
 						db.Configuration.ProxyCreationEnabled = false;
 
-						this.emailSetReceived(db);	
+						this.EmailSetReceived(db);	
 					
-						if (this.messageType.ToUpper() == messageTypes[KITTING_ORDER].ToUpper())
+						if (this.MessageType.ToUpper() == MessageTypes[KittingOrder].ToUpper())
 						{							
-							this.kittingReturnQuantity(db);
+							this.KittingReturnQuantity(db);
 						}
-						if (this.messageType.ToUpper() == messageTypes[SHIPMENT_ORDER].ToUpper())
+						if (this.MessageType.ToUpper() == MessageTypes[ShipmentOrder].ToUpper())
 						{							
-							this.shipmentReturnQuantity(db);
+							this.ShipmentReturnQuantity(db);
 						}
 
-						this.orderSetInactive(db);
+						this.OrderSetInactive(db);
 						
 						tr.Commit();
 						result = true;
@@ -216,18 +218,18 @@ namespace FenixAutomat.DeleteMessageEmail
 			return result;
 		}
 
-		/// <summary>
-		/// Shipment - vrácené množství
-		/// item : Free = Free + itemQuantity 
-		/// kit  : ReleasedForExpedition = ReleasedForExpedition + itemQuantity
-		/// Reserved = Reserved - itemQuantity
-		/// vytváří interní doklad
-		/// </summary>
-		/// <param name="db"></param>
-		private void shipmentReturnQuantity(FenixEntities db)
+        /// <summary>
+        /// Shipment - vrácené množství
+        /// item : Free = Free + itemQuantity 
+        /// kit  : ReleasedForExpedition = ReleasedForExpedition + itemQuantity
+        /// Reserved = Reserved - itemQuantity
+        /// vytváří interní doklad
+        /// </summary>
+        /// <param name="db">Instance třídy <seealso cref="DbContext"/> databáze Fénix</param>
+        private void ShipmentReturnQuantity(FenixEntities db)
 		{
 			var shipmentOrderItems = from so in db.CommunicationMessagesShipmentOrdersSentItems
-									where so.IsActive == true && so.CMSOId == this.id
+									where so.IsActive == true && so.CMSOId == this.Id
 									select so;
 
 			foreach (var shipmentOrderItem in shipmentOrderItems)
@@ -295,18 +297,18 @@ namespace FenixAutomat.DeleteMessageEmail
 				}
 			}
 		}
-		
-		/// <summary>
-		/// Kitting - vrácené množství
-		/// Free     = Free     + (kiQuantity * itemQuantity)
-		/// Reserved = Reserved - (kiQuantity * itemQuantity)
-		/// vytváří interní doklad
-		/// </summary>
-		/// <param name="db"></param>
-		private void kittingReturnQuantity(FenixEntities db)
+
+        /// <summary>
+        /// Kitting - vrácené množství
+        /// Free     = Free     + (kiQuantity * itemQuantity)
+        /// Reserved = Reserved - (kiQuantity * itemQuantity)
+        /// vytváří interní doklad
+        /// </summary>
+        /// <param name="db">Instance třídy <seealso cref="DbContext"/> databáze Fénix</param>
+        private void KittingReturnQuantity(FenixEntities db)
 		{
 			var kitSentItem = (from d in db.CommunicationMessagesKittingsSentItems
-							   where d.CMSOId == this.id
+							   where d.CMSOId == this.Id
 							   select d).FirstOrDefault();
 			if (kitSentItem == null) return;
 
@@ -366,56 +368,61 @@ namespace FenixAutomat.DeleteMessageEmail
 			}			
 		}
 
-		/// <summary>
-		/// Nastaveni MessageStatusId na 12 = "příchozí email úspěšně zpracován, záznam úspěšně aktualizován ve Fenixu" 
-		/// </summary>
-		/// <param name="db"></param>
-		private void emailSetReceived(FenixEntities db)
+        /// <summary>
+        /// Nastaveni MessageStatusId na 12 = "příchozí email úspěšně zpracován, záznam úspěšně aktualizován ve Fenixu" 
+        /// </summary>
+        /// <param name="db">Instance třídy <seealso cref="DbContext"/> databáze Fénix</param>
+        private void EmailSetReceived(FenixEntities db)
 		{
 			var deleteMessageSent = (from dmSent in db.DeleteMessageSent
-									 where dmSent.DeleteId == this.id && dmSent.DeleteMessageId == this.messageID
+									 where dmSent.DeleteId == this.Id && dmSent.DeleteMessageId == this.MessageId
 									 select dmSent).FirstOrDefault();
 
 			if (deleteMessageSent == null) return;
 
-			deleteMessageSent.MessageStatusId = MESSAGE_STATUS_RECEIVED;
+			deleteMessageSent.MessageStatusId = MessageStatusReceived;
 			deleteMessageSent.ReceivedDate = DateTime.Now;
 			deleteMessageSent.ReceivedUserId = this.zicyzUserId;
 			db.SaveChanges();
 		}
 
-		/// <summary>
-		/// Nastavení inaktivity (IsActive = false)
-		/// (hlavička i položky/itemy)
-		/// </summary>
-		/// <param name="db"></param>
-		private void orderSetInactive(FenixEntities db)
+        /// <summary>
+        /// Nastavení inaktivity (IsActive = false)
+        /// (hlavička i položky/itemy)
+        /// </summary>
+        /// <param name="db">Instance třídy <seealso cref="DbContext"/> databáze Fénix</param>
+        private void OrderSetInactive(FenixEntities db)
 		{
-			if (this.messageType.ToUpper() == messageTypes[RECEPTION_ORDER].ToUpper())
+			if (this.MessageType.ToUpper() == MessageTypes[ReceptionOrder].ToUpper())
 			{
-				this.setReceptionOrderInactive(db);
+				this.SetReceptionOrderInactive(db);
 			}
 
-			if (this.messageType.ToUpper() == messageTypes[KITTING_ORDER].ToUpper())
+			if (this.MessageType.ToUpper() == MessageTypes[KittingOrder].ToUpper())
 			{
-				this.setKittingOrderInactive(db);
+				this.SetKittingOrderInactive(db);
 			}
 
-			if (this.messageType.ToUpper() == messageTypes[SHIPMENT_ORDER].ToUpper())
+			if (this.MessageType.ToUpper() == MessageTypes[ShipmentOrder].ToUpper())
 			{
-				this.setShipmentOrderInactive(db);
+				this.SetShipmentOrderInactive(db);
 			}
 
-			if (this.messageType.ToUpper() == messageTypes[REFURBISHED_ORDER].ToUpper())
+			if (this.MessageType.ToUpper() == MessageTypes[RefurbishedOrder].ToUpper())
 			{
-				this.setRefurbishedOrderInactive(db);
+				this.SetRefurbishedOrderInactive(db);
 			}			
 		}
 
-		private void setReceptionOrderInactive(FenixEntities db)
+        /// <summary>
+        /// Nastavuje vlastnost <seealso cref="CommunicationMessagesReceptionSent.IsActive"/> třídy
+        /// <seealso cref="CommunicationMessagesReceptionSent"/> na false
+        /// </summary>
+        /// <param name="db">Instance třídy <seealso cref="DbContext"/> databáze Fénix</param>
+		private void SetReceptionOrderInactive(FenixEntities db)
 		{
 			var inactiveOrder = (from recSent in db.CommunicationMessagesReceptionSent
-								 where recSent.ID == this.id && recSent.MessageId == this.messageID
+								 where recSent.ID == this.Id && recSent.MessageId == this.MessageId
 								 select recSent).FirstOrDefault();
 			if (inactiveOrder == null) return;
 
@@ -423,7 +430,7 @@ namespace FenixAutomat.DeleteMessageEmail
 			db.SaveChanges();
 
 			var inactiveItems = from recSentItems in db.CommunicationMessagesReceptionSentItems
-								where recSentItems.CMSOId == this.id
+								where recSentItems.CMSOId == this.Id
 								select recSentItems;
 			foreach (var inactiveItem in inactiveItems)
 			{
@@ -432,10 +439,15 @@ namespace FenixAutomat.DeleteMessageEmail
 			}
 		}
 
-		private void setKittingOrderInactive(FenixEntities db)
+        /// <summary>
+        /// Nastavuje vlastnost <seealso cref="CommunicationMessagesKittingsSent.IsActive"/> třídy
+        /// <seealso cref="CommunicationMessagesKittingsSent"/> na false
+        /// </summary>
+        /// <param name="db">Instance třídy <seealso cref="DbContext"/> databáze Fénix</param>
+		private void SetKittingOrderInactive(FenixEntities db)
 		{
 			var inactiveOrder = (from kitSent in db.CommunicationMessagesKittingsSent
-								 where kitSent.ID == this.id && kitSent.MessageId == this.messageID
+								 where kitSent.ID == this.Id && kitSent.MessageId == this.MessageId
 								 select kitSent).FirstOrDefault();
 			if (inactiveOrder == null) return;
 
@@ -443,7 +455,7 @@ namespace FenixAutomat.DeleteMessageEmail
 			db.SaveChanges();
 
 			var inactiveItems = from kitSentItems in db.CommunicationMessagesKittingsSentItems
-								where kitSentItems.CMSOId == this.id
+								where kitSentItems.CMSOId == this.Id
 								select kitSentItems;
 			foreach (var inactiveItem in inactiveItems)
 			{
@@ -452,10 +464,16 @@ namespace FenixAutomat.DeleteMessageEmail
 			}
 		}
 
-		private void setShipmentOrderInactive(FenixEntities db)
+        /// <summary>
+        /// Nastavuje vlastnost <seealso cref="CommunicationMessagesShipmentOrdersSent.IsActive"/> třídy
+        /// <seealso cref="CommunicationMessagesShipmentOrdersSent"/> s aktuálním <seealso cref="CommunicationMessagesShipmentOrdersSent.ID"/>
+        /// na false
+        /// </summary>
+        /// <param name="db">Instance třídy <seealso cref="DbContext"/> databáze Fénix</param>
+        private void SetShipmentOrderInactive(FenixEntities db)
 		{
 			var inactiveOrder = (from shipSent in db.CommunicationMessagesShipmentOrdersSent
-								 where shipSent.ID == this.id && shipSent.MessageId == this.messageID
+								 where shipSent.ID == this.Id && shipSent.MessageId == this.MessageId
 								 select shipSent).FirstOrDefault();
 			if (inactiveOrder == null) return;
 
@@ -463,7 +481,7 @@ namespace FenixAutomat.DeleteMessageEmail
 			db.SaveChanges();
 
 			var inactiveItems = from shipSentItems in db.CommunicationMessagesShipmentOrdersSentItems
-								where shipSentItems.CMSOId == this.id
+								where shipSentItems.CMSOId == this.Id
 								select shipSentItems;
 			foreach (var inactiveItem in inactiveItems)
 			{
@@ -472,10 +490,15 @@ namespace FenixAutomat.DeleteMessageEmail
 			}
 		}
 
-		private void setRefurbishedOrderInactive(FenixEntities db)
+        /// <summary>
+        /// Nastavuje vlastnost <seealso cref="CommunicationMessagesRefurbishedOrder.IsActive"/> třídy
+        /// <seealso cref="CommunicationMessagesRefurbishedOrder"/> na false
+        /// </summary>
+        /// <param name="db">Instance třídy <seealso cref="DbContext"/> databáze Fénix</param>
+		private void SetRefurbishedOrderInactive(FenixEntities db)
 		{
 			var inactiveOrder = (from refOrder in db.CommunicationMessagesRefurbishedOrder
-								 where refOrder.ID == this.id && refOrder.MessageId == this.messageID
+								 where refOrder.ID == this.Id && refOrder.MessageId == this.MessageId
 								 select refOrder).FirstOrDefault();
 			if (inactiveOrder == null) return;
 
@@ -483,7 +506,7 @@ namespace FenixAutomat.DeleteMessageEmail
 			db.SaveChanges();
 
 			var inactiveItems = from refOrderItems in db.CommunicationMessagesRefurbishedOrderItems
-								where refOrderItems.CMSOId == this.id
+								where refOrderItems.CMSOId == this.Id
 								select refOrderItems;
 			foreach (var inactiveItem in inactiveItems)
 			{
@@ -496,34 +519,34 @@ namespace FenixAutomat.DeleteMessageEmail
 		/// Parsing předmětu emailu
 		/// požadován tvar: UPC_CZ Fenix DeleteMessage MessageDescription={0} ID={1} MessageID={2}
 		/// </summary>
-		/// <param name="emailSubject"></param>
+		/// <param name="emailSubject">Předmět emailu</param>
 		/// <returns></returns>
-		private bool parseEmailSubject(string emailSubject)
+		private bool ParseEmailSubject(string emailSubject)
 		{
 			bool parseSubject = false;
 
-			this.emailSubject = emailSubject;
+			this.EmailSubject = emailSubject;
 			
-			if (this.emailSubject.IndexOf("UPC_CZ Fenix DeleteMessage MessageDescription=") >= 0)
+			if (this.EmailSubject.IndexOf("UPC_CZ Fenix DeleteMessage MessageDescription=") >= 0)
 			{
-				string[] base2 = this.emailSubject.Split(' ');				
+				string[] base2 = this.EmailSubject.Split(' ');				
 				foreach (string item in base2)
 				{					
 					if (item.StartsWith("MessageDescription="))
 					{
-						this.messageType = item.Substring(item.IndexOf("=") + 1);
+						this.MessageType = item.Substring(item.IndexOf("=") + 1);
 					}
 					if (item.StartsWith("ID="))
 					{
-						this.id = ConvertExtensions.ToInt32(item.Substring(item.IndexOf("=") + 1), 0);
+						this.Id = ConvertExtensions.ToInt32(item.Substring(item.IndexOf("=") + 1), 0);
 					}
 					if (item.StartsWith("MessageID="))
 					{
-						this.messageID = ConvertExtensions.ToInt32(item.Substring(item.IndexOf("=") + 1), 0);
+						this.MessageId = ConvertExtensions.ToInt32(item.Substring(item.IndexOf("=") + 1), 0);
 					}
 				}
 
-				if ((Array.IndexOf(this.messageTypes, this.messageType) >= 0) && this.id > 0 && this.messageID > 0)
+				if ((Array.IndexOf(this.MessageTypes, this.MessageType) >= 0) && this.Id > 0 && this.MessageId > 0)
 				{
 					parseSubject = true;					
 				}
@@ -536,13 +559,11 @@ namespace FenixAutomat.DeleteMessageEmail
 		/// Odešle email s informací o přijetí DeleteMessageEmail (D0Message)
 		/// <para>(tento email se odešle právě 1x)</para>
 		/// </summary>
-		/// <param name="message"></param>
-		/// <param name="ndResult"></param>
-		/// <param name="methodName"></param>
-		private void sendInfoEmail(string methodName)
+		/// <param name="methodName">Název metody</param>
+		private void SendInfoEmail(string methodName)
 		{
 			string message = string.Format("D0  DeleteMessageEmail  MessageDescription = [{0}]  ID = [{1}]  MessageID = [{2}]  přijato z ND/XPO.", 
-				                           this.messageType, this.id, this.messageID);
+				                           this.MessageType, this.Id, this.MessageId);
 
 			Email infoEmail = new Email()
 			{

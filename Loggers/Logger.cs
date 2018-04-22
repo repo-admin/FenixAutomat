@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 using FenixHelper;
 using FenixAutomat.EmailSender;
 using FenixHelper.Common;
+// ReSharper disable All
 
 namespace FenixAutomat.Loggers
 {
 	/// <summary>
-	/// Obecná třída logger
+	/// Agregovaný logger adaptér pro logování do databáze a do souboru
 	/// </summary>
 	public class Logger
 	{
@@ -28,17 +29,18 @@ namespace FenixAutomat.Loggers
 
 			// připraví XML message (zruší deklarační část a jmenné prostory)
 			string modifiedXmlString = XmlCreator.CreateXMLRootNode(xmlMessage);
-			DBLogger.WriteXmlMessageToLog(message, modifiedXmlString, source, zicyzUserId);
+			DbLogger.WriteXmlMessageToLog(message, modifiedXmlString, source, zicyzUserId);
 		}
-		
-		/// <summary>
-		/// zápis zprávy do logů
-		/// </summary>
-		/// <param name="messageType"></param>
-		/// <param name="message"></param>
-		/// <param name="methodName"></param>
-		/// <param name="zicyzID"></param>
-		public static void WriteIntoLoggers(string messageType, bool addDateTime, string message, string methodName, int zicyzID)
+
+	    /// <summary>
+	    /// zápis zprávy do logů
+	    /// </summary>
+	    /// <param name="messageType"></param>
+	    /// <param name="addDateTime"></param>
+	    /// <param name="message"></param>
+	    /// <param name="methodName"></param>
+	    /// <param name="zicyzID"></param>
+	    public static void WriteIntoLoggers(string messageType, bool addDateTime, string message, string methodName, int zicyzID)
 		{
 			if (addDateTime)
 			{
@@ -51,8 +53,8 @@ namespace FenixAutomat.Loggers
 
 			if (!String.IsNullOrEmpty(messageType))
 			{
-				string preparedMessage = prepareMessage(message);
-				DBLogger.WriteToLog(messageType, preparedMessage, methodName, zicyzID);
+				string preparedMessage = PrepareMessage(message);
+				DbLogger.WriteToLog(messageType, preparedMessage, methodName, zicyzID);
 			}
 		}
 
@@ -69,20 +71,21 @@ namespace FenixAutomat.Loggers
 
 			if (!String.IsNullOrEmpty(messageType))
 			{
-				string preparedMessage = prepareMessage(message);
-				DBLogger.WriteToLog(messageType, preparedMessage, methodName, zicyzID);
+				string preparedMessage = PrepareMessage(message);
+				DbLogger.WriteToLog(messageType, preparedMessage, methodName, zicyzID);
 			}
 		}
 
-		/// <summary>
-		/// Zpracování vyjímky
-		/// <para>- zápis vyjímky do logů</para>		
-		/// <para>- odeslání chybového emailu</para>
-		/// </summary>
-		/// <param name="exception"></param>
-		/// <param name="methodName"></param>
-		/// <param name="zicyzID"></param>		
-		public static void ProcessError(ResultAppService result, Exception exception, string methodName, int zicyzID)
+	    /// <summary>
+	    /// Zpracování vyjímky
+	    /// <para>- zápis vyjímky do logů</para>		
+	    /// <para>- odeslání chybového emailu</para>
+	    /// </summary>
+	    /// <param name="result"></param>
+	    /// <param name="exception"></param>
+	    /// <param name="methodName"></param>
+	    /// <param name="zicyzID"></param>		
+	    public static void ProcessError(ResultAppService result, Exception exception, string methodName, int zicyzID)
 		{
 			string exceptionMessage = exception != null ? exception.Message : "UNKNOWN error!";
 
@@ -121,7 +124,7 @@ namespace FenixAutomat.Loggers
 			string errorMsg = !String.IsNullOrEmpty(errorMessage) ? errorMessage : "UNKNOWN error!";
 
 			FileLogger.WriteToLog(BC.LogFile, FileLogger.PrepareMsg(errorMsg));
-			DBLogger.WriteToLog("ERROR", errorMsg, methodName, zicyzID);
+			DbLogger.WriteToLog("ERROR", errorMsg, methodName, zicyzID);
 
 			Email.SendMail("Fenix Automat Error", String.Format("{0}{1}{2}", methodName, Environment.NewLine, errorMsg), false, BC.MailErrorTo, "", "");
 		}
@@ -139,7 +142,7 @@ namespace FenixAutomat.Loggers
 
 			if (!String.IsNullOrEmpty(messageType))
 			{
-				DBLogger.WriteToLog(messageType, exception.Message, methodName, zicyzID);
+				DbLogger.WriteToLog(messageType, exception.Message, methodName, zicyzID);
 			}
 		}
 
@@ -149,7 +152,7 @@ namespace FenixAutomat.Loggers
 		/// </summary>
 		/// <param name="message"></param>
 		/// <returns></returns>
-		private static string prepareMessage(string message)
+		private static string PrepareMessage(string message)
 		{
 			string result = String.Empty;
 

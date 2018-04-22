@@ -5,20 +5,20 @@ using UPC.Extensions.Convert;
 using UPC.Extensions.Enum;
 using FenixHelper.Common;
 using FenixHelper;
+// ReSharper disable All
 
 namespace FenixAutomat.Loggers
 {
 	/// <summary>
 	/// Logování do databáze
 	/// </summary>
-	public class DBLogger
+	public class DbLogger
 	{
 		#region Public Methods
 
 		/// <summary>
 		/// Zápis XML zprávy do tabulky logu
 		/// </summary>
-		/// <param name="logType"></param>
 		/// <param name="message"></param>
 		/// <param name="xmlMessage"></param>
 		/// <param name="source"></param>
@@ -42,15 +42,16 @@ namespace FenixAutomat.Loggers
 				;
 			}
 		}
-		
-		/// <summary>
-		/// Zápis do tabulky logu
-		/// <para>(případná chyba se ignoruje)</para>
-		/// </summary>
-		/// <param name="result"></param>
-		/// <param name="source"></param>
-		/// <param name="zicyzUserId"></param>
-		public static void WriteToLog(string logType, string message, string source, int zicyzUserId)
+
+	    /// <summary>
+	    /// Zápis do tabulky logu
+	    /// <para>(případná chyba se ignoruje)</para>
+	    /// </summary>
+	    /// <param name="message"></param>
+	    /// <param name="source"></param>
+	    /// <param name="zicyzUserId"></param>
+	    /// <param name="logType"></param>
+	    public static void WriteToLog(string logType, string message, string source, int zicyzUserId)
 		{
 			try
 			{

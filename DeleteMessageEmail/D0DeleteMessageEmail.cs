@@ -26,12 +26,12 @@ namespace FenixAutomat.DeleteMessageEmail
 		/// <summary>
 		/// Záznam čeká na odeslání 
 		/// </summary>
-		private const int MESSAGE_STATUS_WAIT_FOR_SEND = 1;
+		private const int MessageStatusWaitForSend = 1;
 
 		/// <summary>
 		/// Záznam odeslán emailem (email odeslán do ND/XPO)
 		/// </summary>
-		private const int MESSAGE_STATUS_EMAIL_SENT = 11;
+		private const int MessageStatusEmailSent = 11;
 
 		/// <summary>
 		/// ctor
@@ -59,14 +59,14 @@ namespace FenixAutomat.DeleteMessageEmail
 
 					var deleteMessages = (from b in db.DeleteMessageSent
 									      orderby b.ID ascending
-										  where b.IsActive == true && b.MessageStatusId == MESSAGE_STATUS_WAIT_FOR_SEND 
+										  where b.IsActive == true && b.MessageStatusId == MessageStatusWaitForSend 
 									      select b).Take(BC.NumRowsToSend);
 					
 					result.AddResultMessage(String.Format("Počet DeleteMessage {0}", deleteMessages != null ? deleteMessages.Count() : 0));
 
 					foreach (var deleteMessage in deleteMessages)
 					{
-						this.processDeleteMessage(result, deleteMessage);
+						this.ProcessDeleteMessage(result, deleteMessage);
 					}
 				}
 			}
@@ -84,7 +84,7 @@ namespace FenixAutomat.DeleteMessageEmail
 		/// </summary>
 		/// <param name="result"></param>
 		/// <param name="deleteMessage"></param>
-		private void processDeleteMessage(ResultAppService result, DeleteMessageSent deleteMessage)
+		private void ProcessDeleteMessage(ResultAppService result, DeleteMessageSent deleteMessage)
 		{
 			ResultAppService res = new ResultAppService();
 
@@ -120,20 +120,19 @@ namespace FenixAutomat.DeleteMessageEmail
 
 			if (res.ResultNumber == 0)
 			{
-				DeleteMessageEmailSetSent deleteMessageEmailSetSent = new DeleteMessageEmailSetSent(deleteMessage.ID, MESSAGE_STATUS_EMAIL_SENT, this.zicyzUserId);
+				DeleteMessageEmailSetSent deleteMessageEmailSetSent = new DeleteMessageEmailSetSent(deleteMessage.ID, MessageStatusEmailSent, this.zicyzUserId);
 				deleteMessageEmailSetSent.SetSent();
-				this.sendInfoEmail(deleteMessage.ID, AppLog.GetMethodName());
+				this.SendInfoEmail(deleteMessage.ID, AppLog.GetMethodName());
 			}
 		}
 
-		/// <summary>
-		/// Odešle email s informací o odeslání DeleteMessageEmail (D0Message)
-		/// <para>(tento email se odešle právě 1x)</para>
-		/// </summary>
-		/// <param name="message"></param>
-		/// <param name="ndResult"></param>
-		/// <param name="methodName"></param>
-		private void sendInfoEmail(int id, string methodName)
+	    /// <summary>
+	    /// Odešle email s informací o odeslání DeleteMessageEmail (D0Message)
+	    /// <para>(tento email se odešle právě 1x)</para>
+	    /// </summary>
+	    /// <param name="id">Identifikátor záznamu mazací zprávy v databázi</param>
+	    /// <param name="methodName"></param>
+	    private void SendInfoEmail(int id, string methodName)
 		{			
 			string message = string.Format("D0  DeleteMessageEmail ID = [{0}] odesláno do ND.", id);
 

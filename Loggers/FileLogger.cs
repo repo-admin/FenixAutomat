@@ -12,26 +12,25 @@ namespace FenixAutomat.Loggers
 
 		/// <summary>zápis do LOG souboru.</summary>
 		/// <param name="logFile">úplné jméno LOG souboru</param>
-		/// <param name="msg">text zprávy</param>
-		public static void WriteToLog(string logFile, string msg)
+		/// <param name="message">text zprávy</param>
+		public static void WriteToLog(string logFile, string message)
 		{
 			System.IO.StreamWriter wr = null;
 			try
 			{
 				wr = new System.IO.StreamWriter(logFile, true, Encoding.GetEncoding(1250));
-				wr.WriteLine(msg);
+				wr.WriteLine(message);
 				wr.Flush();
 				wr.Close();
 			}
 			catch
 			{
-				if (wr != null)
-					wr.Close();
+			    wr?.Close();
 			}
 		}
 
 		/// <summary>
-		/// příprava zprávy (je rozšířena o datum a čas)
+		/// Příprava zprávy (je rozšířena o datum a čas)
 		/// </summary>
 		/// <param name="message"></param>
 		/// <returns></returns>
@@ -41,13 +40,13 @@ namespace FenixAutomat.Loggers
 				                                 : String.Format("{0} {1}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), message);			
 		}
 
-		/// <summary>
-		/// smazání LOG souboru pokud přesáhne definovanou velikost
-		/// </summary>
-		/// <param name="logFile"></param>
-		public static void DeleteLogFile(string logFile)
+        /// <summary>
+        /// Smaže log soubor, pokud přesáhne definovanou velikost, resp 500 MB
+        /// </summary>
+        /// <param name="logFile"></param>
+        public static void DeleteLogFile(string logFile)
 		{
-			// odstranění LOGu, je-li větší než ~ 500 MB
+			// odstranění logu, je-li větší než ~ 500 MB
 			try
 			{
 				System.IO.FileInfo fi = new System.IO.FileInfo(logFile);
