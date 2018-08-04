@@ -3,10 +3,10 @@ using System.Data.Entity.Core.Objects;
 using System.IO;
 using System.Net.Mail;
 using System.Net.Mime;
+using Fenix;
+using Fenix.Common;
 using FenixAutomat.EmailSender;
 using FenixAutomat.Loggers;
-using FenixHelper;
-using FenixHelper.Common;
 
 namespace FenixAutomat.EmailCreator.DeleteEmail
 {
@@ -148,7 +148,7 @@ namespace FenixAutomat.EmailCreator.DeleteEmail
 			}
 			catch (Exception ex)
 			{
-				Logger.ProcessError(this.Result, ex, AppLog.GetMethodName(), BC.ServiceUserId);
+				Logger.ProcessError(this.Result, ex, ApplicationLog.GetMethodName(), BC.ServiceUserId);
 			}
 		}
 
@@ -195,7 +195,7 @@ namespace FenixAutomat.EmailCreator.DeleteEmail
 				}
 				catch (Exception ex)
 				{
-					Logger.ProcessError(this.Result, ex, AppLog.GetMethodName(), BC.ServiceUserId);
+					Logger.ProcessError(this.Result, ex, ApplicationLog.GetMethodName(), BC.ServiceUserId);
 				}
 			}
 		}

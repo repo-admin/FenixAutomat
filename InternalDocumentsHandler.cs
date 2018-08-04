@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Linq;
+using Fenix;
 using FenixAutomat.Loggers;
-using FenixHelper;
 
 namespace FenixAutomat
 {
@@ -51,7 +51,7 @@ namespace FenixAutomat
 			}
 			catch (Exception ex)
 			{					
-				Logger.ProcessError(ex, AppLog.GetMethodName(), BC.ServiceUserId);
+				Logger.ProcessError(ex, ApplicationLog.GetMethodName(), BC.ServiceUserId);
 			}
 
 			return cardStockItem;
@@ -100,7 +100,7 @@ namespace FenixAutomat
 			}
 			catch (Exception ex)
 			{
-				Logger.ProcessError(ex, AppLog.GetMethodName(), BC.ServiceUserId);
+				Logger.ProcessError(ex, ApplicationLog.GetMethodName(), BC.ServiceUserId);
 			}			
 		} 
 

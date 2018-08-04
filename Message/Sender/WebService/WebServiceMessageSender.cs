@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
+using Fenix.Extensions;
 using FenixAutomat.NDLInterfaces;
-using FenixHelper;
 
 namespace FenixAutomat.Message.Sender.WebService
 {

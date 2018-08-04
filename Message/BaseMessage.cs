@@ -1,7 +1,7 @@
 ﻿using System;
+using Fenix.Common;
 using FenixAutomat.Loggers;
 using FenixAutomat.Message.Sender;
-using FenixHelper.Common;
 using FenixAutomat.EmailSender;
 // ReSharper disable All
 

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Linq;
+using Fenix;
+using Fenix.Common;
+using Fenix.Extensions;
 using FenixAutomat.EmailCreator.DeleteEmail;
 using FenixAutomat.EmailSender;
 using FenixAutomat.Loggers;
 using FenixAutomat.Message.SetSent;
-using FenixHelper;
-using FenixHelper.Common;
 
 namespace FenixAutomat.DeleteMessageEmail
 {
@@ -72,7 +73,7 @@ namespace FenixAutomat.DeleteMessageEmail
 			}
 			catch (Exception e)
 			{				
-				Logger.ProcessError(result, e, AppLog.GetMethodName(), BC.ServiceUserId);
+				Logger.ProcessError(result, e, ApplicationLog.GetMethodName(), BC.ServiceUserId);
 			}
 
 			return result;
@@ -122,7 +123,7 @@ namespace FenixAutomat.DeleteMessageEmail
 			{
 				DeleteMessageEmailSetSent deleteMessageEmailSetSent = new DeleteMessageEmailSetSent(deleteMessage.ID, MessageStatusEmailSent, this.zicyzUserId);
 				deleteMessageEmailSetSent.SetSent();
-				this.SendInfoEmail(deleteMessage.ID, AppLog.GetMethodName());
+				this.SendInfoEmail(deleteMessage.ID, ApplicationLog.GetMethodName());
 			}
 		}
 

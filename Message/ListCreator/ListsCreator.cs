@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FenixHelper.XMLMessage;
-using UPC.Extensions;
+using Fenix;
+using Fenix.XmlMessages;
 using UPC.Extensions.Convert;
 
 namespace FenixAutomat.Message
@@ -82,13 +80,13 @@ namespace FenixAutomat.Message
 					}
 					catch (Exception ex)
 					{
-						returnMessage = BC.CreateErrorMessage(FenixHelper.AppLog.GetMethodName(), ex);
+						returnMessage = BC.CreateErrorMessage(ApplicationLog.GetMethodName(), ex);
 					}
 				}
 			}
 			catch (Exception ex)
 			{
-				returnMessage = BC.CreateErrorMessage(FenixHelper.AppLog.GetMethodName(), ex);
+				returnMessage = BC.CreateErrorMessage(ApplicationLog.GetMethodName(), ex);
 			}
 
 			return result;
@@ -168,13 +166,13 @@ namespace FenixAutomat.Message
 					}
 					catch (Exception ex)
 					{
-						returnMessage = BC.CreateErrorMessage(FenixHelper.AppLog.GetMethodName(), ex);
+						returnMessage = BC.CreateErrorMessage(ApplicationLog.GetMethodName(), ex);
 					}
 				}
 			}
 			catch (Exception ex)
 			{
-				returnMessage = BC.CreateErrorMessage(FenixHelper.AppLog.GetMethodName(), ex);
+				returnMessage = BC.CreateErrorMessage(ApplicationLog.GetMethodName(), ex);
 			}
 
 			return result;
@@ -245,13 +243,13 @@ namespace FenixAutomat.Message
 					}
 					catch (Exception ex)
 					{
-						returnMessage = BC.CreateErrorMessage(FenixHelper.AppLog.GetMethodName(), ex);						
+						returnMessage = BC.CreateErrorMessage(ApplicationLog.GetMethodName(), ex);						
 					}
 				}
 			}
 			catch (Exception e)
 			{
-				returnMessage = BC.CreateErrorMessage(FenixHelper.AppLog.GetMethodName(), e);				
+				returnMessage = BC.CreateErrorMessage(ApplicationLog.GetMethodName(), e);				
 			}
 
 			return result;
@@ -316,13 +314,13 @@ namespace FenixAutomat.Message
 					}
 					catch (Exception ex)
 					{
-						returnMessage = BC.CreateErrorMessage(FenixHelper.AppLog.GetMethodName(), ex);						
+						returnMessage = BC.CreateErrorMessage(ApplicationLog.GetMethodName(), ex);						
 					}
 				}
 			}
 			catch (Exception e)
 			{
-				returnMessage = BC.CreateErrorMessage(FenixHelper.AppLog.GetMethodName(), e);				
+				returnMessage = BC.CreateErrorMessage(ApplicationLog.GetMethodName(), e);				
 			}
 
 			return result;
@@ -397,13 +395,13 @@ namespace FenixAutomat.Message
 					}
 					catch (Exception ex)
 					{
-						returnMessage = BC.CreateErrorMessage(FenixHelper.AppLog.GetMethodName(), ex);
+						returnMessage = BC.CreateErrorMessage(ApplicationLog.GetMethodName(), ex);
 					}
 				}
 			}
 			catch (Exception e)
 			{
-				returnMessage = BC.CreateErrorMessage(FenixHelper.AppLog.GetMethodName(), e);				
+				returnMessage = BC.CreateErrorMessage(ApplicationLog.GetMethodName(), e);				
 			}
 
 			return result;
@@ -491,13 +489,13 @@ namespace FenixAutomat.Message
 					}
 					catch (Exception ex)
 					{
-						returnMessage = BC.CreateErrorMessage(FenixHelper.AppLog.GetMethodName(), ex);
+						returnMessage = BC.CreateErrorMessage(ApplicationLog.GetMethodName(), ex);
 					}
 				}
 			}
 			catch (Exception e)
 			{
-				returnMessage = BC.CreateErrorMessage(FenixHelper.AppLog.GetMethodName(), e);
+				returnMessage = BC.CreateErrorMessage(ApplicationLog.GetMethodName(), e);
 			}
 
 			return result;
@@ -565,13 +563,13 @@ namespace FenixAutomat.Message
 					}
 					catch (Exception ex)
 					{
-						returnMessage = BC.CreateErrorMessage(FenixHelper.AppLog.GetMethodName(), ex);						
+						returnMessage = BC.CreateErrorMessage(ApplicationLog.GetMethodName(), ex);						
 					}
 				}
 			}
 			catch (Exception e)
 			{
-				returnMessage = BC.CreateErrorMessage(FenixHelper.AppLog.GetMethodName(), e);				
+				returnMessage = BC.CreateErrorMessage(ApplicationLog.GetMethodName(), e);				
 			}
 
 			return result;
@@ -618,13 +616,13 @@ namespace FenixAutomat.Message
 					}
 					catch (Exception ex)
 					{
-						returnMessage = BC.CreateErrorMessage(FenixHelper.AppLog.GetMethodName(), ex);
+						returnMessage = BC.CreateErrorMessage(ApplicationLog.GetMethodName(), ex);
 					}
 				}
 			}
 			catch (Exception e)
 			{
-				returnMessage = BC.CreateErrorMessage(FenixHelper.AppLog.GetMethodName(), e);
+				returnMessage = BC.CreateErrorMessage(ApplicationLog.GetMethodName(), e);
 			}
 
 			return result;
@@ -710,13 +708,13 @@ namespace FenixAutomat.Message
 					}
 					catch (Exception ex)
 					{
-						returnMessage = BC.CreateErrorMessage(FenixHelper.AppLog.GetMethodName(), ex);
+						returnMessage = BC.CreateErrorMessage(ApplicationLog.GetMethodName(), ex);
 					}
 				}
 			}
 			catch (Exception e)
 			{
-				returnMessage = BC.CreateErrorMessage(FenixHelper.AppLog.GetMethodName(), e);
+				returnMessage = BC.CreateErrorMessage(ApplicationLog.GetMethodName(), e);
 			}
 
 			return result;

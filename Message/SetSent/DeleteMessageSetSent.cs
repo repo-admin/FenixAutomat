@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Fenix;
 using FenixAutomat.Loggers;
-using FenixHelper;
 
 namespace FenixAutomat.Message.SetSent
 {
@@ -70,11 +70,11 @@ namespace FenixAutomat.Message.SetSent
 						db.SaveChanges();
 					}
 
-					result = String.Format("{0} returnValue [{1}] returnMessage [{2}]", AppLog.GetMethodName(), 0, String.Empty);
+					result = String.Format("{0} returnValue [{1}] returnMessage [{2}]", ApplicationLog.GetMethodName(), 0, String.Empty);
 				}
 				catch (Exception ex)
 				{
-					Logger.ProcessError(ex, AppLog.GetMethodName(), BC.ServiceUserId);
+					Logger.ProcessError(ex, ApplicationLog.GetMethodName(), BC.ServiceUserId);
 				}
 			}
 

@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FenixAutomat.Message.SetSent;
-using FenixHelper;
-using FenixHelper.Common;
-using FenixHelper.XMLMessage;
+using Fenix;
 using FenixAutomat.Loggers;
 using UPC.Extensions.Convert;
 
@@ -90,11 +83,11 @@ namespace FenixAutomat.Message.SetSent.SetSentSpecial
 					//	@ReturnMessage nvarchar(2048) = NULL OUTPUT
 					//)
 
-					result = String.Format("{0} returnValue [{1}] returnMessage [{2}]", AppLog.GetMethodName(), retVal.Value.ToInt32(BC.NOT_OK), retMsg.Value.ToString(String.Empty));
+					result = String.Format("{0} returnValue [{1}] returnMessage [{2}]", ApplicationLog.GetMethodName(), retVal.Value.ToInt32(BC.NOT_OK), retMsg.Value.ToString(String.Empty));
 				}
 				catch (Exception ex)
 				{
-					Logger.ProcessError(ex, AppLog.GetMethodName(), BC.ServiceUserId);
+					Logger.ProcessError(ex, ApplicationLog.GetMethodName(), BC.ServiceUserId);
 				}
 			}
 

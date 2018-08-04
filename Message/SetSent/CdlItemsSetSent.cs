@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Data.Entity.Core.Objects;
+using Fenix;
 using FenixAutomat.Loggers;
 using FenixAutomat.Message.Sender;
-using FenixHelper;
 using UPC.Extensions.Convert;
 
 namespace FenixAutomat.Message.SetSent
@@ -62,11 +62,11 @@ namespace FenixAutomat.Message.SetSent
 
 					db.prCdlItemsSetSent(this.ItemID, retVal, retMsg);
 
-					result = String.Format("{0} returnValue [{1}] returnMessage [{2}]", AppLog.GetMethodName(), retVal.Value.ToInt32(BC.NOT_OK), retMsg.Value.ToString(String.Empty));
+					result = String.Format("{0} returnValue [{1}] returnMessage [{2}]", ApplicationLog.GetMethodName(), retVal.Value.ToInt32(BC.NOT_OK), retMsg.Value.ToString(String.Empty));
 				}
 				catch (Exception ex)
 				{					
-					Logger.ProcessError(ex, AppLog.GetMethodName(), BC.ServiceUserId);
+					Logger.ProcessError(ex, ApplicationLog.GetMethodName(), BC.ServiceUserId);
 				}
 			}
 

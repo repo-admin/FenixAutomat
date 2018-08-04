@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Text;
 using System.Data.Entity.Core.Objects;
-using UPC.Extensions.Convert;
-using UPC.Extensions.Enum;
-using FenixHelper.Common;
-using FenixHelper;
+using Fenix.Common;
+
 // ReSharper disable All
 
 namespace FenixAutomat.Loggers

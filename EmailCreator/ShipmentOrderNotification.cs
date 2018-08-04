@@ -4,10 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Net.Mime;
+using Fenix;
+using Fenix.Extensions;
+using Fenix.XmlMessages;
 using FenixAutomat.EmailSender;
 using FenixAutomat.Message.Sender;
-using FenixHelper;
-using FenixHelper.XMLMessage;
 using UPC.Extensions.Convert;
 
 namespace FenixAutomat.EmailCreator
@@ -100,7 +101,7 @@ namespace FenixAutomat.EmailCreator
 				{
 					if (actualS0Shipment.Header.ContactEmail.IsNullOrEmpty())
 					{
-						this.SendErrorEmail(String.Format("S0 ID = [{0}]\nnemá vyplněný email příjemce.", this.actualS0Shipment.Header.ID), AppLog.GetMethodName());
+						this.SendErrorEmail(String.Format("S0 ID = [{0}]\nnemá vyplněný email příjemce.", this.actualS0Shipment.Header.ID), ApplicationLog.GetMethodName());
 					}
 				}
 			}
@@ -189,7 +190,7 @@ namespace FenixAutomat.EmailCreator
 			}
 			catch (Exception ex)
 			{
-				this.SendErrorEmail(ex, AppLog.GetMethodName());
+				this.SendErrorEmail(ex, ApplicationLog.GetMethodName());
 				throw;
 			}
 		}
@@ -216,7 +217,7 @@ namespace FenixAutomat.EmailCreator
 			}
 			catch(Exception ex)
 			{
-				this.SendErrorEmail(ex, AppLog.GetMethodName());
+				this.SendErrorEmail(ex, ApplicationLog.GetMethodName());
 				throw;
 			}
 		}
@@ -284,7 +285,7 @@ namespace FenixAutomat.EmailCreator
 		/// <returns></returns>
 		private static string GetClassName()
 		{
-			string[] par = AppLog.GetMethodName().Split('.');
+			string[] par = ApplicationLog.GetMethodName().Split('.');
 			string name = par.Length >= 2 ? par[1] : "UNKNOWN CLASS NAME";
 
 			return name;

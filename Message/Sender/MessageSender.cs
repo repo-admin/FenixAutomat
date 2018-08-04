@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Text;
 using System.Xml;
+using Fenix;
+using Fenix.Xml;
 using FenixAutomat.Loggers;
-using FenixAutomat.NDLInterfaces;
-using FenixHelper;
 using FenixAutomat.Message.Sender.Simulator;
 using FenixAutomat.Message.Sender.WebService;
 
@@ -73,7 +72,7 @@ namespace FenixAutomat.Message.Sender
 			}
 			catch (Exception ex)
 			{
-				Logger.ProcessError(ex, AppLog.GetMethodName(), BC.ServiceUserId);
+				Logger.ProcessError(ex, ApplicationLog.GetMethodName(), BC.ServiceUserId);
 			}
 
 			return res;

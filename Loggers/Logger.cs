@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FenixHelper;
+using Fenix.Common;
+using Fenix.Xml;
 using FenixAutomat.EmailSender;
-using FenixHelper.Common;
+
 // ReSharper disable All
 
 namespace FenixAutomat.Loggers

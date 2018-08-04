@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
+using Fenix;
+using Fenix.Common;
+using Fenix.Extensions;
 using FenixAutomat.Loggers;
-using FenixHelper;
-using FenixHelper.Common;
 
 namespace FenixAutomat.EmailCreator.DeleteEmail
 {
@@ -77,7 +78,7 @@ namespace FenixAutomat.EmailCreator.DeleteEmail
 			}
 			catch (Exception ex)
 			{
-				Logger.ProcessError(base.Result, ex, AppLog.GetMethodName(), BC.ServiceUserId);
+				Logger.ProcessError(base.Result, ex, ApplicationLog.GetMethodName(), BC.ServiceUserId);
 			}
 
 			return content;
@@ -122,7 +123,7 @@ namespace FenixAutomat.EmailCreator.DeleteEmail
 			}
 			catch (Exception ex)
 			{
-				Logger.ProcessError(base.Result, ex, AppLog.GetMethodName(), BC.ServiceUserId);
+				Logger.ProcessError(base.Result, ex, ApplicationLog.GetMethodName(), BC.ServiceUserId);
 			}
 
 			return content;
@@ -134,7 +135,7 @@ namespace FenixAutomat.EmailCreator.DeleteEmail
 		/// <returns></returns>
 		private string GetClassName()
 		{
-			string[] par = AppLog.GetMethodName().Split('.');
+			string[] par = ApplicationLog.GetMethodName().Split('.');
 			string name = par.Length >= 2 ? par[1] : "UNKNOWN CLASS NAME";
 
 			return name;

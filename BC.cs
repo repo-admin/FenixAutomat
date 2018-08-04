@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Data.SqlClient;
 using System.IO;
-using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 

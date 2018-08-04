@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Fenix;
+using Fenix.Common;
+using Fenix.Xml;
+using Fenix.XmlMessages;
 using FenixAutomat.Loggers;
 using FenixAutomat.Message.Sender;
 using FenixAutomat.Message.SetSent;
-using FenixHelper;
-using FenixHelper.Common;
-using FenixHelper.XMLMessage;
 
 namespace FenixAutomat.Message
 {
@@ -44,7 +45,7 @@ namespace FenixAutomat.Message
 
 			if (returnedError != String.Empty)
 			{
-				this.ProcessListsCreatorError(returnedError, AppLog.GetMethodName());
+				this.ProcessListsCreatorError(returnedError, ApplicationLog.GetMethodName());
 				return;
 			}
 						
@@ -57,19 +58,19 @@ namespace FenixAutomat.Message
 				foreach (var cdlItem in cdlItemsList)
 				{
 					xmlSourceString = XmlCreator.CreateXmlString(cdlItem, BC.URL_W3_ORG_SCHEMA, Encoding.UTF8, CreatorSettings.Declaration);
-					Logger.PrepareAndWriteXmlMessageToLogs(String.Format("CdlItem to ND  ID = [{0}]", cdlItem.ItemIntegration.items[0].ItemID), xmlSourceString, AppLog.GetMethodName(), this.ZicyzUserID);
+					Logger.PrepareAndWriteXmlMessageToLogs(String.Format("CdlItem to ND  ID = [{0}]", cdlItem.ItemIntegration.items[0].ItemID), xmlSourceString, ApplicationLog.GetMethodName(), this.ZicyzUserID);
 
 					ndResult = this.SendXmlMessageToND(xmlSourceString, "Item");
 
 					CdlItemsSetSent cdlItemsSetSent = new CdlItemsSetSent(cdlItem.ItemIntegration.items[0].ItemID, ndResult);
 					cdlItemsSetSent.SetSent();
 
-					this.ActionsAfterSendingXmlMessageToND(String.Format("CdlItem ID = [{0}] odesláno do ND.", cdlItem.ItemIntegration.items[0].ItemID), ndResult, AppLog.GetMethodName());
+					this.ActionsAfterSendingXmlMessageToND(String.Format("CdlItem ID = [{0}] odesláno do ND.", cdlItem.ItemIntegration.items[0].ItemID), ndResult, ApplicationLog.GetMethodName());
 				}
 			}
 			catch (Exception ex)
 			{				
-				Logger.ProcessError(ex, AppLog.GetMethodName(), BC.ServiceUserId);
+				Logger.ProcessError(ex, ApplicationLog.GetMethodName(), BC.ServiceUserId);
 			}
 		}
 
@@ -83,7 +84,7 @@ namespace FenixAutomat.Message
 
 			if (returnedError != String.Empty)
 			{
-				this.ProcessListsCreatorError(returnedError, AppLog.GetMethodName());				
+				this.ProcessListsCreatorError(returnedError, ApplicationLog.GetMethodName());				
 				return;
 			}
 						
@@ -96,19 +97,19 @@ namespace FenixAutomat.Message
 				foreach (var cdlItemForKit in cdlItemsForKit)
 				{
 					xmlSourceString = XmlCreator.CreateXmlString(cdlItemForKit, BC.URL_W3_ORG_SCHEMA, Encoding.UTF8, CreatorSettings.Declaration);
-					Logger.PrepareAndWriteXmlMessageToLogs(String.Format("CdlKit to ND  ID = [{0}]", cdlItemForKit.ItemIntegration.items[0].ItemID), xmlSourceString, AppLog.GetMethodName(), this.ZicyzUserID);
+					Logger.PrepareAndWriteXmlMessageToLogs(String.Format("CdlKit to ND  ID = [{0}]", cdlItemForKit.ItemIntegration.items[0].ItemID), xmlSourceString, ApplicationLog.GetMethodName(), this.ZicyzUserID);
 
 					ndResult = this.SendXmlMessageToND(xmlSourceString, "Item");
 					
 					CdlKitsSetSent cdlKitsSetSent = new CdlKitsSetSent(cdlItemForKit.ItemIntegration.items[0].ItemID, ndResult);
 					cdlKitsSetSent.SetSent();
 
-					this.ActionsAfterSendingXmlMessageToND(String.Format("CdlKit ID = [{0}] odesláno do ND.", cdlItemForKit.ItemIntegration.items[0].ItemID), ndResult, AppLog.GetMethodName());
+					this.ActionsAfterSendingXmlMessageToND(String.Format("CdlKit ID = [{0}] odesláno do ND.", cdlItemForKit.ItemIntegration.items[0].ItemID), ndResult, ApplicationLog.GetMethodName());
 				}
 			}
 			catch (Exception ex )
 			{				
-				Logger.ProcessError(ex, AppLog.GetMethodName(), BC.ServiceUserId);
+				Logger.ProcessError(ex, ApplicationLog.GetMethodName(), BC.ServiceUserId);
 			}
 		}
 	}

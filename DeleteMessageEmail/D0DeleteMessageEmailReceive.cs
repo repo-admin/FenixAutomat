@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Linq;
+using Fenix;
+using Fenix.Common;
 using FenixAutomat.EmailReceiver;
 using FenixAutomat.EmailSender;
 using FenixAutomat.Loggers;
-using FenixHelper;
-using FenixHelper.Common;
 using Microsoft.Exchange.WebServices.Data;
 using UPC.Extensions.Convert;
 
@@ -85,7 +85,7 @@ namespace FenixAutomat.DeleteMessageEmail
 									message.IsRead = true;
 									message.Update(ConflictResolutionMode.AlwaysOverwrite);
 									message.Delete(DeleteMode.MoveToDeletedItems);
-									this.SendInfoEmail(AppLog.GetMethodName());
+									this.SendInfoEmail(ApplicationLog.GetMethodName());
 									this.ProcessedEmailCount++;
 								}
 							}
@@ -102,7 +102,7 @@ namespace FenixAutomat.DeleteMessageEmail
 			}
 			catch (Exception e)
 			{
-				Logger.ProcessError(result, e, AppLog.GetMethodName(), BC.ServiceUserId);
+				Logger.ProcessError(result, e, ApplicationLog.GetMethodName(), BC.ServiceUserId);
 			}
 
 			return result;
@@ -141,7 +141,7 @@ namespace FenixAutomat.DeleteMessageEmail
 						emr.EmailParsedSubjectHash = parsedSubjectHash;
 						emr.EmailMessage = string.Empty;
 						emr.EmailFrom = emailFrom;
-						emr.Source = AppLog.GetMethodName();
+						emr.Source = ApplicationLog.GetMethodName();
 						emr.IsActive = true;
 						emr.IsExternal = true;
 						emr.ModifyUserId = this.zicyzUserId;
@@ -210,7 +210,7 @@ namespace FenixAutomat.DeleteMessageEmail
 					catch (Exception ex)
 					{
 						tr.Rollback();
-						Logger.ProcessError(ex, AppLog.GetMethodName(), BC.ServiceUserId);
+						Logger.ProcessError(ex, ApplicationLog.GetMethodName(), BC.ServiceUserId);
 					}
 				}
 			}

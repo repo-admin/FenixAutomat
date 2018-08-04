@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Fenix;
+using Fenix.Common;
+using Fenix.Xml;
+using Fenix.XmlMessages;
 using FenixAutomat.EmailCreator;
 using FenixAutomat.Loggers;
 using FenixAutomat.Message.Sender;
 using FenixAutomat.Message.SetSent;
 using FenixAutomat.Message.SetSent.SetSentSpecial;
-using FenixHelper;
-using FenixHelper.Common;
-using FenixHelper.XMLMessage;
 
 namespace FenixAutomat.Message
 {
@@ -103,7 +104,7 @@ namespace FenixAutomat.Message
 			
 			if (returnedError != String.Empty)
 			{
-				this.ProcessListsCreatorError(returnedError, AppLog.GetMethodName());				
+				this.ProcessListsCreatorError(returnedError, ApplicationLog.GetMethodName());				
 				return;
 			}
 			
@@ -116,19 +117,19 @@ namespace FenixAutomat.Message
 				foreach (var receptionOrder in receptionOrderList)
 				{
 					xmlSourceString = XmlCreator.CreateXmlString(receptionOrder, BC.URL_W3_ORG_SCHEMA, Encoding.UTF8, CreatorSettings.Declaration);
-					Logger.PrepareAndWriteXmlMessageToLogs(String.Format("ReceptionOrder to ND  ID = [{0}]", receptionOrder.Header.ID), xmlSourceString, AppLog.GetMethodName(), this.ZicyzUserID);
+					Logger.PrepareAndWriteXmlMessageToLogs(String.Format("ReceptionOrder to ND  ID = [{0}]", receptionOrder.Header.ID), xmlSourceString, ApplicationLog.GetMethodName(), this.ZicyzUserID);
 															
 					ndResult = this.SendXmlMessageToND(xmlSourceString, messageTypes[(int)MessageType.ReceptionOrder]);
 															
 					ReceptionOrderSetSent receptionOrderSetSent = new ReceptionOrderSetSent(receptionOrder.Header.ID, ndResult.Result);					
 					receptionOrderSetSent.SetSent();
 
-					this.ActionsAfterSendingXmlMessageToND(String.Format("R0 ReceptionOrder ID = [{0}] odesláno do ND.", receptionOrder.Header.ID), ndResult, AppLog.GetMethodName());
+					this.ActionsAfterSendingXmlMessageToND(String.Format("R0 ReceptionOrder ID = [{0}] odesláno do ND.", receptionOrder.Header.ID), ndResult, ApplicationLog.GetMethodName());
 				}
 			}
 			catch (Exception ex)
 			{				
-				Logger.ProcessError(ex, AppLog.GetMethodName(), BC.ServiceUserId);
+				Logger.ProcessError(ex, ApplicationLog.GetMethodName(), BC.ServiceUserId);
 			}
 		}
 
@@ -142,7 +143,7 @@ namespace FenixAutomat.Message
 
 			if (returnedError != String.Empty)
 			{
-				this.ProcessListsCreatorError(returnedError, AppLog.GetMethodName());				
+				this.ProcessListsCreatorError(returnedError, ApplicationLog.GetMethodName());				
 				return;
 			}
 						
@@ -155,19 +156,19 @@ namespace FenixAutomat.Message
 				foreach (var kitOrder in kitOrderList)
 				{
 					xmlSourceString = XmlCreator.CreateXmlString(kitOrder, BC.URL_W3_ORG_SCHEMA, Encoding.UTF8, CreatorSettings.Declaration);
-					Logger.PrepareAndWriteXmlMessageToLogs(String.Format("KittingOrder to ND  ID = [{0}]", kitOrder.Header.ID), xmlSourceString, AppLog.GetMethodName(), this.ZicyzUserID);
+					Logger.PrepareAndWriteXmlMessageToLogs(String.Format("KittingOrder to ND  ID = [{0}]", kitOrder.Header.ID), xmlSourceString, ApplicationLog.GetMethodName(), this.ZicyzUserID);
 
 					ndResult = this.SendXmlMessageToND(xmlSourceString, messageTypes[(int)MessageType.KittingOrder]);
 															
 					KittingsOrderSetSent receptionOrderSetSent = new KittingsOrderSetSent(kitOrder.Header.ID, ndResult.Result);					
 					receptionOrderSetSent.SetSent();
 
-					this.ActionsAfterSendingXmlMessageToND(String.Format("K0 KittingOrder ID = [{0}] odesláno do ND.", kitOrder.Header.ID), ndResult, AppLog.GetMethodName());
+					this.ActionsAfterSendingXmlMessageToND(String.Format("K0 KittingOrder ID = [{0}] odesláno do ND.", kitOrder.Header.ID), ndResult, ApplicationLog.GetMethodName());
 				}
 			}
 			catch (Exception ex)
 			{				
-				Logger.ProcessError(ex, AppLog.GetMethodName(), BC.ServiceUserId);
+				Logger.ProcessError(ex, ApplicationLog.GetMethodName(), BC.ServiceUserId);
 			}
 		}
 
@@ -181,7 +182,7 @@ namespace FenixAutomat.Message
 
 			if (returnedError != String.Empty)
 			{
-				this.ProcessListsCreatorError(returnedError, AppLog.GetMethodName());				
+				this.ProcessListsCreatorError(returnedError, ApplicationLog.GetMethodName());				
 				return;
 			}
 						
@@ -194,19 +195,19 @@ namespace FenixAutomat.Message
 				foreach (var kitApproval in kitApprovalList)
 				{
 					xmlSourceString = XmlCreator.CreateXmlString(kitApproval, BC.URL_W3_ORG_SCHEMA, Encoding.UTF8, CreatorSettings.Declaration);
-					Logger.PrepareAndWriteXmlMessageToLogs(String.Format("KittingApproval to ND  ID = [{0}]", kitApproval.Header.ID), xmlSourceString, AppLog.GetMethodName(), this.ZicyzUserID);
+					Logger.PrepareAndWriteXmlMessageToLogs(String.Format("KittingApproval to ND  ID = [{0}]", kitApproval.Header.ID), xmlSourceString, ApplicationLog.GetMethodName(), this.ZicyzUserID);
 
 					ndResult = this.SendXmlMessageToND(xmlSourceString, messageTypes[(int)MessageType.KittingApproval]);
 					
 					KittingsApprovalSetSent kittingsApprovalSetSent = new KittingsApprovalSetSent(kitApproval.Header.ID, ndResult.Result);					
 					kittingsApprovalSetSent.SetSent();
 
-					this.ActionsAfterSendingXmlMessageToND(String.Format("K2 KittingApproval ID = [{0}] odesláno do ND.", kitApproval.Header.ID), ndResult, AppLog.GetMethodName());
+					this.ActionsAfterSendingXmlMessageToND(String.Format("K2 KittingApproval ID = [{0}] odesláno do ND.", kitApproval.Header.ID), ndResult, ApplicationLog.GetMethodName());
 				}
 			}
 			catch (Exception ex)
 			{				
-				Logger.ProcessError(ex, AppLog.GetMethodName(), BC.ServiceUserId);
+				Logger.ProcessError(ex, ApplicationLog.GetMethodName(), BC.ServiceUserId);
 			}
 		}
 
@@ -220,7 +221,7 @@ namespace FenixAutomat.Message
 
 			if (returnedError != String.Empty)
 			{
-				this.ProcessListsCreatorError(returnedError, AppLog.GetMethodName());				
+				this.ProcessListsCreatorError(returnedError, ApplicationLog.GetMethodName());				
 				return;
 			}
 						
@@ -233,14 +234,14 @@ namespace FenixAutomat.Message
 				foreach (var shipmentOrder in shipmentOrderList)
 				{
 					xmlSourceString = XmlCreator.CreateXmlString(shipmentOrder, BC.URL_W3_ORG_SCHEMA, Encoding.UTF8, CreatorSettings.Declaration);
-					Logger.PrepareAndWriteXmlMessageToLogs(String.Format("ShipmentOrder to ND  ID = [{0}]", shipmentOrder.Header.ID), xmlSourceString, AppLog.GetMethodName(), this.ZicyzUserID);
+					Logger.PrepareAndWriteXmlMessageToLogs(String.Format("ShipmentOrder to ND  ID = [{0}]", shipmentOrder.Header.ID), xmlSourceString, ApplicationLog.GetMethodName(), this.ZicyzUserID);
 
 					ndResult = this.SendXmlMessageToND(xmlSourceString, messageTypes[(int)MessageType.ShipmentOrder]);
 					
 					ShipmentOrderSetSent shipmentOrderSetSent = new ShipmentOrderSetSent(shipmentOrder.Header.ID, ndResult.Result);
 					shipmentOrderSetSent.SetSent();
 
-					this.ActionsAfterSendingXmlMessageToND(String.Format("S0 ShipmentOrder ID = [{0}] odesláno do ND.", shipmentOrder.Header.ID), ndResult, AppLog.GetMethodName());
+					this.ActionsAfterSendingXmlMessageToND(String.Format("S0 ShipmentOrder ID = [{0}] odesláno do ND.", shipmentOrder.Header.ID), ndResult, ApplicationLog.GetMethodName());
 
 					//vytvoření a odeslání upozorňovacího emailu
 					ShipmentOrderNotification shipmentOrderNotification = new ShipmentOrderNotification(shipmentOrder, ndResult);
@@ -249,7 +250,7 @@ namespace FenixAutomat.Message
 			}
 			catch (Exception ex)
 			{				
-				Logger.ProcessError(ex, AppLog.GetMethodName(), BC.ServiceUserId);
+				Logger.ProcessError(ex, ApplicationLog.GetMethodName(), BC.ServiceUserId);
 			}
 		}
 
@@ -263,7 +264,7 @@ namespace FenixAutomat.Message
 
 			if (returnedError != String.Empty)
 			{
-				this.ProcessListsCreatorError(returnedError, AppLog.GetMethodName());				
+				this.ProcessListsCreatorError(returnedError, ApplicationLog.GetMethodName());				
 				return;
 			}
 						
@@ -276,19 +277,19 @@ namespace FenixAutomat.Message
 				foreach (var refurbishedOrder in refurbishedOrderList)
 				{
 					xmlSourceString = XmlCreator.CreateXmlString(refurbishedOrder, BC.URL_W3_ORG_SCHEMA, Encoding.UTF8, CreatorSettings.Declaration);
-					Logger.PrepareAndWriteXmlMessageToLogs(String.Format("RefurbishedOrder to ND  ID = [{0}]", refurbishedOrder.Header.ID), xmlSourceString, AppLog.GetMethodName(), this.ZicyzUserID);
+					Logger.PrepareAndWriteXmlMessageToLogs(String.Format("RefurbishedOrder to ND  ID = [{0}]", refurbishedOrder.Header.ID), xmlSourceString, ApplicationLog.GetMethodName(), this.ZicyzUserID);
 
 					ndResult = this.SendXmlMessageToND(xmlSourceString, messageTypes[(int)MessageType.RefurbishedOrder]);
 					
 					RefurbishedOrderSetSent refurbishedOrderSetSent = new RefurbishedOrderSetSent(refurbishedOrder.Header.ID, ndResult.Result);
 					refurbishedOrderSetSent.SetSent();
 
-					this.ActionsAfterSendingXmlMessageToND(String.Format("RF0 RefurbishedOrder ID = [{0}] odesláno do ND.", refurbishedOrder.Header.ID), ndResult, AppLog.GetMethodName());
+					this.ActionsAfterSendingXmlMessageToND(String.Format("RF0 RefurbishedOrder ID = [{0}] odesláno do ND.", refurbishedOrder.Header.ID), ndResult, ApplicationLog.GetMethodName());
 				}
 			}
 			catch (Exception ex)
 			{				
-				Logger.ProcessError(ex, AppLog.GetMethodName(), BC.ServiceUserId);
+				Logger.ProcessError(ex, ApplicationLog.GetMethodName(), BC.ServiceUserId);
 			}
 		}
 
@@ -302,7 +303,7 @@ namespace FenixAutomat.Message
 
 			if (returnedError != String.Empty)
 			{
-				this.ProcessListsCreatorError(returnedError, AppLog.GetMethodName());
+				this.ProcessListsCreatorError(returnedError, ApplicationLog.GetMethodName());
 				return;
 			}
 
@@ -315,19 +316,19 @@ namespace FenixAutomat.Message
 				foreach (var deleteMessage in deleteMessageList)
 				{
 					xmlSourceString = XmlCreator.CreateXmlString(deleteMessage, BC.URL_W3_ORG_SCHEMA, Encoding.UTF8, CreatorSettings.Declaration);
-					Logger.PrepareAndWriteXmlMessageToLogs(String.Format("DeleteMessage to ND  ID = [{0}]", deleteMessage.Header.ID), xmlSourceString, AppLog.GetMethodName(), this.ZicyzUserID);
+					Logger.PrepareAndWriteXmlMessageToLogs(String.Format("DeleteMessage to ND  ID = [{0}]", deleteMessage.Header.ID), xmlSourceString, ApplicationLog.GetMethodName(), this.ZicyzUserID);
 
 					ndResult = this.SendXmlMessageToND(xmlSourceString, messageTypes[(int)MessageType.DeleteMessage]);
 
 					DeleteMessageSetSent deleteMessageSetSent = new DeleteMessageSetSent(deleteMessage.Header.MessageID, ndResult.Result, this.ZicyzUserID);
 					deleteMessageSetSent.SetSent();
 
-					this.ActionsAfterSendingXmlMessageToND(String.Format("D0 DeleteMessage ID = [{0}] odesláno do ND.", deleteMessage.Header.ID), ndResult, AppLog.GetMethodName());
+					this.ActionsAfterSendingXmlMessageToND(String.Format("D0 DeleteMessage ID = [{0}] odesláno do ND.", deleteMessage.Header.ID), ndResult, ApplicationLog.GetMethodName());
 				}
 			}
 			catch (Exception ex)
 			{
-				Logger.ProcessError(ex, AppLog.GetMethodName(), BC.ServiceUserId);
+				Logger.ProcessError(ex, ApplicationLog.GetMethodName(), BC.ServiceUserId);
 			}
 		}
 
@@ -341,7 +342,7 @@ namespace FenixAutomat.Message
 			
 			if (returnedError != String.Empty)
 			{
-				this.ProcessListsCreatorError(returnedError, AppLog.GetMethodName());
+				this.ProcessListsCreatorError(returnedError, ApplicationLog.GetMethodName());
 				return;
 			}
 
@@ -354,7 +355,7 @@ namespace FenixAutomat.Message
 				foreach (var crmOrder in crmOrderList)
 				{
 					xmlSourceString = XmlCreator.CreateXmlString(crmOrder, BC.URL_W3_ORG_SCHEMA, Encoding.UTF8, CreatorSettings.Declaration);
-					Logger.PrepareAndWriteXmlMessageToLogs(String.Format("CrmOrder to ND  ID = [{0}]", crmOrder.Header.ID), xmlSourceString, AppLog.GetMethodName(), this.ZicyzUserID);
+					Logger.PrepareAndWriteXmlMessageToLogs(String.Format("CrmOrder to ND  ID = [{0}]", crmOrder.Header.ID), xmlSourceString, ApplicationLog.GetMethodName(), this.ZicyzUserID);
 
 					ndResult = this.SendXmlMessageToND(xmlSourceString, messageTypes[(int)MessageType.CrmOrder]);
 
@@ -365,12 +366,12 @@ namespace FenixAutomat.Message
 					//ReceptionOrderSetSent receptionOrderSetSent = new ReceptionOrderSetSent(crmOrder.Header.ID, ndResult.Result);
 					//receptionOrderSetSent.SetSent();
 
-					this.ActionsAfterSendingXmlMessageToND(String.Format("C0 CrmOrder ID = [{0}] odesláno do ND.", crmOrder.Header.ID), ndResult, AppLog.GetMethodName());
+					this.ActionsAfterSendingXmlMessageToND(String.Format("C0 CrmOrder ID = [{0}] odesláno do ND.", crmOrder.Header.ID), ndResult, ApplicationLog.GetMethodName());
 				}
 			}
 			catch (Exception ex)
 			{
-				Logger.ProcessError(ex, AppLog.GetMethodName(), BC.ServiceUserId);
+				Logger.ProcessError(ex, ApplicationLog.GetMethodName(), BC.ServiceUserId);
 			}
 		}
 	}
