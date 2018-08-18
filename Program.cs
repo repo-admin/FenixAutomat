@@ -41,6 +41,7 @@ namespace FenixAutomat
 			Logger.WriteIntoLoggers("", String.Empty, String.Empty, BC.ServiceUserId);
 		}
 
+
 		/// <summary>
 		/// Zjištění, zda je povolena prováděcí část programu (odesílání XML zpráv do ND)
 		/// </summary>
